@@ -1,0 +1,23 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+version = '1.0'
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'validator4test', 'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'log4j:log4j:1.2.17'
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.4'
+}
+
+test {
+    useTestNG()
+    systemProperties 'property': 'value'
+}
