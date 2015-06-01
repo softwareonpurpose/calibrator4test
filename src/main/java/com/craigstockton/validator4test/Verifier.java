@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Craig A. Stockton
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,7 +15,7 @@
  */
 package com.craigstockton.validator4test;
 
-import org.apache.log4j.LogManager;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 
@@ -31,8 +31,9 @@ public class Verifier {
     private Verifier(String description, Object expected, Object actual, Reconciler reconciler, IndentManager formatter) {
         this.indentManager = formatter;
         this.description = description;
-        this.message = String.format("%s -- Expected: %s  Actual: %s%n", description,
-                expected == null ? "<null>" : expected.toString(), actual == null ? "<null>" : actual.toString());
+        this.message = String
+                .format("%s -- Expected: %s  Actual: %s%n", description, expected == null ? "<null>" : expected.toString(),
+                        actual == null ? "<null>" : actual.toString());
         this.reconciler = reconciler;
     }
 
@@ -103,7 +104,7 @@ public class Verifier {
      * @return New instance of Verifier
      */
     public static Verifier getInstance(String description, List<String> expected, List<String> actual,
-                                       IndentManager indentManager) {
+            IndentManager indentManager) {
         String flatExpectedList = getFlatList(expected);
         String flatActualList = getFlatList(actual);
         Reconciler reconciler = Reconciler.getInstance(expected, actual);

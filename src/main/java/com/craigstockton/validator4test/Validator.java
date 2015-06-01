@@ -15,8 +15,8 @@
  */
 package com.craigstockton.validator4test;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class Validator {
 
     public static final String PASS = "";
-    private final List<Validator> children = new ArrayList<>();
+    private final List<Validator> children = new ArrayList<Validator>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder knownIssues = new StringBuilder();

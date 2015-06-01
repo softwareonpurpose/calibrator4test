@@ -71,7 +71,7 @@ public class ReconcilerTest {
 
     @Test
     public void equalStringLists() {
-        List<String> stringList = new ArrayList<>();
+        List<String> stringList = new ArrayList<String>();
         stringList.add("String 1");
         stringList.add("String 2");
         int result = Reconciler.getInstance(stringList, stringList).reconcile();
@@ -80,7 +80,7 @@ public class ReconcilerTest {
 
     @Test
     public void missingExpectedStringList() {
-        List<String> stringList = new ArrayList<>();
+        List<String> stringList = new ArrayList<String>();
         stringList.add("String 1");
         stringList.add("String 2");
         int result = Reconciler.getInstance(null, stringList).reconcile();
@@ -89,7 +89,7 @@ public class ReconcilerTest {
 
     @Test
     public void missingActualStringList() {
-        List<String> stringList = new ArrayList<>();
+        List<String> stringList = new ArrayList<String>();
         stringList.add("String 1");
         stringList.add("String 2");
         int result = Reconciler.getInstance(stringList, null).reconcile();
@@ -98,10 +98,10 @@ public class ReconcilerTest {
 
     @Test
     public void stringListContentDiffers() {
-        List<String> expectedStringList = new ArrayList<>();
+        List<String> expectedStringList = new ArrayList<String>();
         expectedStringList.add("String 1");
         expectedStringList.add("String 2");
-        List<String> actualStringList = new ArrayList<>();
+        List<String> actualStringList = new ArrayList<String>();
         actualStringList.add("String 1");
         actualStringList.add("String 3");
         int result = Reconciler.getInstance(expectedStringList, actualStringList).reconcile();
@@ -110,10 +110,10 @@ public class ReconcilerTest {
 
     @Test
     public void stringListContentOrderDiffers() {
-        List<String> expectedStringList = new ArrayList<>();
+        List<String> expectedStringList = new ArrayList<String>();
         expectedStringList.add("String 1");
         expectedStringList.add("String 2");
-        List<String> actualStringList = new ArrayList<>();
+        List<String> actualStringList = new ArrayList<String>();
         actualStringList.add("String 2");
         actualStringList.add("String 1");
         int result = Reconciler.getInstance(expectedStringList, actualStringList).reconcile();
