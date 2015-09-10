@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Craig A. Stockton
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,18 +20,30 @@ package com.craigstockton.validator4test;
  */
 public class IndentManager {
 
-    private final static int spacesPerLevel = 4;
+    private final int spacesPerLevel;
     private int indentationLevel;
 
-    private IndentManager() {
+    private IndentManager(int spacesPerLevel) {
+        this.spacesPerLevel = spacesPerLevel;
     }
 
     /**
      * Return a new instance of IndentManager
+     *
      * @return Instance of IndentManger
      */
     public static IndentManager getInstance() {
-        return new IndentManager();
+        return new IndentManager(2);
+    }
+
+    /**
+     * Return a new instance of IndentManager
+     *
+     * @param spacesPerLevel Number of spaces to indent per level of indentation
+     * @return Instance of IndentManager
+     */
+    public static IndentManager getInstance(int spacesPerLevel) {
+        return new IndentManager(spacesPerLevel);
     }
 
     /**
@@ -71,5 +83,9 @@ public class IndentManager {
 
     private String getIndentation() {
         return new String(new char[spacesPerLevel * indentationLevel]).replace('\0', ' ');
+    }
+
+    public boolean isAtRootLevel() {
+        return indentationLevel == 0;
     }
 }

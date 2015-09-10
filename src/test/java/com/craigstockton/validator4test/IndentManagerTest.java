@@ -20,16 +20,16 @@ public class IndentManagerTest {
     @Test
     public void singleIndentation() {
         final String message = "Message Text";
-        final IndentManager manager = IndentManager.getInstance();
+        final IndentManager manager = IndentManager.getInstance(3);
         manager.increment();
-        Assert.assertEquals(manager.format(message), String.format("    %s", message), "After incrementing by 1, " +
+        Assert.assertEquals(manager.format(message), String.format("   %s", message), "After incrementing by 1, " +
                 "format() returns message with four-space indentation");
     }
 
     @Test
     public void doubleIndentation() {
         final String message = "Message Text";
-        final IndentManager manager = IndentManager.getInstance();
+        final IndentManager manager = IndentManager.getInstance(4);
         manager.increment(2);
         Assert.assertEquals(manager.format(message), String.format("        %s", message), "After incrementing by " +
                 "2," +
@@ -39,7 +39,7 @@ public class IndentManagerTest {
     @Test
     public void decrementOnce() {
         final String message = "Message Text";
-        final IndentManager manager = IndentManager.getInstance();
+        final IndentManager manager = IndentManager.getInstance(4);
         manager.increment(2);
         manager.decrement();
         Assert.assertEquals(manager.format(message), String.format("    %s", message), "After incrementing by 2 " +

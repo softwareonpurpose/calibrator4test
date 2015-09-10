@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class Validator {
 
     public static final String PASS = "";
-    private final List<Validator> children = new ArrayList<Validator>();
+    private final List<Validator> children = new ArrayList<>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder knownIssues = new StringBuilder();
@@ -179,7 +179,10 @@ public abstract class Validator {
     }
 
     private void logValidation() {
-        getLogger().info(String.format("VALIDATE: %s", getDescription()));
+        String description = getIndentManager().isAtRootLevel() ?
+                String.format("VALIDATE:%n%s", getDescription()) :
+                getDescription();
+        getLogger().info(getIndentManager().format(description));
     }
 
     private String getKnownIssues() {
