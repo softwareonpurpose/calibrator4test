@@ -24,16 +24,16 @@ public class Verifier {
     private final static String passedMessage = "";
     private final static int RECONCILED = 0;
     private final IndentManager indentManager;
-    private final String description;
+    private final String verificationDescription;
     private final String message;
     private Reconciler reconciler;
 
     private Verifier(String description, Object expected, Object actual, Reconciler reconciler, IndentManager formatter) {
         this.indentManager = formatter;
-        this.description = description;
-        this.message = String
-                .format("%s -- Expected: %s  Actual: %s%n", description, expected == null ? "<null>" : expected.toString(),
-                        actual == null ? "<null>" : actual.toString());
+        String expectedDescription = expected == null ? "<null>" : expected.toString();
+        this.verificationDescription = String.format("%s - %s", description, expectedDescription);
+        this.message = String.format("%s -- Expected: %s  Actual: %s%n", description, expectedDescription,
+                actual == null ? "<null>" : actual.toString());
         this.reconciler = reconciler;
     }
 
@@ -123,10 +123,10 @@ public class Verifier {
     /**
      * Verifies that the Expected and Actual values reconcile
      *
-     * @return Empty String ("") if they values reconcile; a message containing the two values if there is a discrepancy
+     * @return Empty String ("") if the values reconcile; a message containing the two values if there is a discrepancy
      */
     protected String verify() {
-        LogManager.getLogger(this.getClass()).info(indentManager.format(description));
+        LogManager.getLogger(this.getClass()).info(indentManager.format(verificationDescription));
         Integer reconciliation = reconciler.reconcile();
         if (reconciliation.equals(RECONCILED))
             return passedMessage;
