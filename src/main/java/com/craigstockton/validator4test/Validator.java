@@ -30,7 +30,7 @@ public abstract class Validator {
     private final StringBuilder knownIssues = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
     private final String description;
-    private final ValidateBehavior validateBehavior;
+    private final ValidationBehavior validationBehavior;
     private final String className;
 
     /**
@@ -53,10 +53,10 @@ public abstract class Validator {
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
         if (indentManager == null) {
-            validateBehavior = new RootBehavior();
+            validationBehavior = new RootBehavior();
             this.indentManager = IndentManager.getInstance();
         } else {
-            validateBehavior = new ChildBehavior();
+            validationBehavior = new ChildBehavior();
             this.indentManager = indentManager;
         }
         this.description = description;
@@ -81,6 +81,15 @@ public abstract class Validator {
      * @return An instance of the validatee with expected values exists
      */
     protected abstract boolean expectedExists();
+
+    /**
+     * Validate the Actual object using the Expected object
+     *
+     * @return For child validators, a list of verification failures; for root validators, a validation report
+     */
+    public String validate() {
+        return validationBehavior.execute();
+    }
 
     /**
      * Add a child validator4test
@@ -161,16 +170,7 @@ public abstract class Validator {
         recordIfFailed(result);
     }
 
-    /**
-     * Validate the Actual object using the Expected object
-     *
-     * @return For child validators, a list of verification failures; for root validators, a validation report
-     */
-    public String validate() {
-        return validateBehavior.execute();
-    }
-
-    protected IndentManager getIndentManager() {
+    private IndentManager getIndentManager() {
         return indentManager;
     }
 
@@ -272,14 +272,14 @@ public abstract class Validator {
         failures.append(getIndentManager().format(result));
     }
 
-        /*----  Private Validate Behaviors      -----*/
+        /*----  Private Validation Behaviors      -----*/
 
-    private interface ValidateBehavior {
+    private interface ValidationBehavior {
 
         String execute();
     }
 
-    private class RootBehavior implements ValidateBehavior {
+    private class RootBehavior implements ValidationBehavior {
 
         @Override
         public String execute() {
@@ -292,7 +292,7 @@ public abstract class Validator {
         }
     }
 
-    private class ChildBehavior implements ValidateBehavior {
+    private class ChildBehavior implements ValidationBehavior {
 
         @Override
         public String execute() {

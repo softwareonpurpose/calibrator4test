@@ -46,7 +46,7 @@ public class Verifier {
      * @param indentManager IndentManager to use to format results
      * @return New instance of Verifier
      */
-    public static Verifier getInstance(String description, Integer expected, Integer actual, IndentManager indentManager) {
+    static Verifier getInstance(String description, Integer expected, Integer actual, IndentManager indentManager) {
         Reconciler reconciler = Reconciler.getInstance(expected, actual);
         return new Verifier(description, expected, actual, reconciler, indentManager);
     }
@@ -60,7 +60,7 @@ public class Verifier {
      * @param indentManager IndentManager to use to format results
      * @return New instance of Verifier
      */
-    public static Verifier getInstance(String description, Boolean expected, Boolean actual, IndentManager indentManager) {
+    static Verifier getInstance(String description, Boolean expected, Boolean actual, IndentManager indentManager) {
         Reconciler reconciler = Reconciler.getInstance(expected, actual);
         return new Verifier(description, expected, actual, reconciler, indentManager);
     }
@@ -75,7 +75,7 @@ public class Verifier {
      * @return New instance of Verifier
      */
 
-    public static Verifier getInstance(String description, Long expected, Long actual, IndentManager indentManager) {
+    static Verifier getInstance(String description, Long expected, Long actual, IndentManager indentManager) {
         Reconciler reconciler = Reconciler.getInstance(expected, actual);
         return new Verifier(description, expected, actual, reconciler, indentManager);
     }
@@ -89,7 +89,7 @@ public class Verifier {
      * @param indentManager IndentManager to use to format results
      * @return New instance of Verifier
      */
-    public static Verifier getInstance(String description, String expected, String actual, IndentManager indentManager) {
+    static Verifier getInstance(String description, String expected, String actual, IndentManager indentManager) {
         Reconciler reconciler = Reconciler.getInstance(expected, actual);
         return new Verifier(description, expected, actual, reconciler, indentManager);
     }
@@ -103,8 +103,7 @@ public class Verifier {
      * @param indentManager IndentManager to use to format results
      * @return New instance of Verifier
      */
-    public static Verifier getInstance(String description, List<String> expected, List<String> actual,
-            IndentManager indentManager) {
+    static Verifier getInstance(String description, List<String> expected, List<String> actual, IndentManager indentManager) {
         String flatExpectedList = getFlatList(expected);
         String flatActualList = getFlatList(actual);
         Reconciler reconciler = Reconciler.getInstance(expected, actual);

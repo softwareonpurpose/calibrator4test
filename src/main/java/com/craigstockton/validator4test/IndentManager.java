@@ -32,7 +32,7 @@ public class IndentManager {
      *
      * @return Instance of IndentManger
      */
-    public static IndentManager getInstance() {
+    static IndentManager getInstance() {
         return new IndentManager(2);
     }
 
@@ -42,14 +42,14 @@ public class IndentManager {
      * @param spacesPerLevel Number of spaces to indent per level of indentation
      * @return Instance of IndentManager
      */
-    public static IndentManager getInstance(int spacesPerLevel) {
+    static IndentManager getInstance(int spacesPerLevel) {
         return new IndentManager(spacesPerLevel);
     }
 
     /**
      * Increment indentation level by one
      */
-    public void increment() {
+    void increment() {
         increment(1);
     }
 
@@ -58,14 +58,14 @@ public class IndentManager {
      *
      * @param numberOfLevels Number of levels to increment the current level
      */
-    public void increment(int numberOfLevels) {
+    void increment(int numberOfLevels) {
         indentationLevel += numberOfLevels;
     }
 
     /**
      * Decrement indentation level by one
      */
-    public void decrement() {
+    void decrement() {
         if (indentationLevel > 0)
             indentationLevel--;
     }
@@ -76,7 +76,7 @@ public class IndentManager {
      * @param line The line of text to be formatted
      * @return
      */
-    public String format(String line) {
+    String format(String line) {
         boolean lineIsNullOrEmpty = line == null || line.length() == 0;
         return lineIsNullOrEmpty ? "" : String.format("%s%s", getIndentation(), line);
     }
@@ -85,7 +85,7 @@ public class IndentManager {
         return new String(new char[spacesPerLevel * indentationLevel]).replace('\0', ' ');
     }
 
-    public boolean isAtRootLevel() {
+    boolean isAtRootLevel() {
         return indentationLevel == 0;
     }
 }

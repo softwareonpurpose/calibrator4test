@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Craig A. Stockton
- * <p/>
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,7 +36,7 @@ public class Reconciler {
      *
      * @return An instance of of a Boolean reconciler
      */
-    public static Reconciler getInstance(Boolean expected, Boolean actual) {
+    static Reconciler getInstance(Boolean expected, Boolean actual) {
         return new Reconciler(expected, actual);
     }
 
@@ -45,7 +45,7 @@ public class Reconciler {
      *
      * @return An instance of of a Integer reconciler
      */
-    public static Reconciler getInstance(Integer expected, Integer actual) {
+    static Reconciler getInstance(Integer expected, Integer actual) {
         return new Reconciler(expected, actual);
     }
 
@@ -54,7 +54,7 @@ public class Reconciler {
      *
      * @return An instance of of a Long reconciler
      */
-    public static Reconciler getInstance(Long expected, Long actual) {
+    static Reconciler getInstance(Long expected, Long actual) {
         return new Reconciler(expected, actual);
     }
 
@@ -63,7 +63,7 @@ public class Reconciler {
      *
      * @return An instance of of a String reconciler
      */
-    public static Reconciler getInstance(String expected, String actual) {
+    static Reconciler getInstance(String expected, String actual) {
         return new Reconciler(expected, actual);
     }
 
@@ -72,7 +72,7 @@ public class Reconciler {
      *
      * @return An instance of of a String-list reconciler
      */
-    public static Reconciler getInstance(List<String> expected, List<String> actual) {
+    static Reconciler getInstance(List<String> expected, List<String> actual) {
         return new Reconciler(expected, actual);
     }
 
@@ -80,7 +80,7 @@ public class Reconciler {
      * @return Integer value indicating the reconciliation result (0 - Reconciled; 1 - Expected is null; 2 - Actual is
      * null; 3 - Discrepancy)
      */
-    public int reconcile() {
+    int reconcile() {
         if (expected == null && actual == null)
             return RECONCILED;
         if (expected == null)
