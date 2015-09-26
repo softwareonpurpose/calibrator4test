@@ -32,23 +32,20 @@ public abstract class Validator {
     private final String description;
     private final ValidationBehavior validationBehavior;
     private final String className;
-
-    /**
-     * Constructor to be used by "Root" validators (NO parent)
-     *
-     * @param description A description of the object validated
-     */
-    protected Validator(String description) {
-        this(description, null);
-    }
+    private final boolean expectedExists;
+    private final boolean actualExists;
 
     /**
      * Constructor to be used by "Child" validators (added as a child of at least one other validator4test)
      *
      * @param description     A description of the object validated
+     * @param expected        Object representing an expected state
+     * @param actual          Object representing an actual state
      * @param parentValidator The parent Validator
      */
-    protected Validator(String description, Validator parentValidator) {
+    protected Validator(String description, Object expected, Object actual, Validator parentValidator) {
+        this.expectedExists = expected != null;
+        this.actualExists = actual != null;
         IndentManager indentManager = parentValidator == null ? null : parentValidator.getIndentManager();
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
@@ -63,24 +60,39 @@ public abstract class Validator {
     }
 
     /**
+     * Constructor to be used by "Root" validators (NO parent)
+     *
+     * @param description A description of the object validated
+     * @param expected    Object representing an expected state
+     * @param actual      Object representing an actual state
+     */
+    protected Validator(String description, Object expected, Object actual) {
+        this(description, expected, actual, null);
+    }
+
+    /**
      * Execute a list of verifications of the Actual object using the Expected object.  Implemented in the inheritor of
      * Validator.  Intended to contain ONLY calls to the verify() methods.
      */
     protected abstract void executeVerifications();
 
     /**
-     * Indicate whether the Actual object has been provided.  Implemented in the inheritor of Validator.
+     * Indicates whether the Actual object has been provided.
      *
      * @return The 'actual' validatee exists
      */
-    protected abstract boolean actualExists();
+    protected boolean actualExists() {
+        return actualExists;
+    }
 
     /**
-     * Indicate whether the Expected object has been provided.  Implemented in the inheritor of Validator.
+     * Indicates whether the Expected object has been provided.
      *
      * @return An instance of the validatee with expected values exists
      */
-    protected abstract boolean expectedExists();
+    protected boolean expectedExists() {
+        return expectedExists;
+    }
 
     /**
      * Validate the Actual object using the Expected object
