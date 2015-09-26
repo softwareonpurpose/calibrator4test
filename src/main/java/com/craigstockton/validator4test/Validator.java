@@ -192,7 +192,7 @@ public abstract class Validator {
 
     private void logValidation() {
         String description = getIndentManager().isAtRootLevel() ?
-                String.format("VALIDATE:%n%s", getDescription()) :
+                String.format("%nVALIDATE:%n%s", getDescription()) :
                 getDescription();
         getLogger().info(getIndentManager().format(description));
     }
