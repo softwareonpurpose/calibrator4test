@@ -1,7 +1,7 @@
-package com.craigstockton.validator4test;
+package com.softwareonpurpose.validator4test;
 
-import com.craigstockton.validator4test.mock.AnObject;
-import com.craigstockton.validator4test.mock.AnObjectValidator;
+import com.softwareonpurpose.validator4test.mock.AnObject;
+import com.softwareonpurpose.validator4test.mock.AnObjectValidator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

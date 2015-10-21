@@ -1,4 +1,4 @@
-package com.craigstockton.validator4test.mock;
+package com.softwareonpurpose.validator4test.mock;
 
 public class AnObject {
 

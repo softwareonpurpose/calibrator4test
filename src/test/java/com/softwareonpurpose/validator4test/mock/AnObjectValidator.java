@@ -1,6 +1,6 @@
-package com.craigstockton.validator4test.mock;
+package com.softwareonpurpose.validator4test.mock;
 
-import com.craigstockton.validator4test.Validator;
+import com.softwareonpurpose.validator4test.Validator;
 
 public class AnObjectValidator extends Validator {
 

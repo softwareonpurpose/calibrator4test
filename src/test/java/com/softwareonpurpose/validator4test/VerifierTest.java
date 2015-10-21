@@ -1,4 +1,4 @@
-package com.craigstockton.validator4test;
+package com.softwareonpurpose.validator4test;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;

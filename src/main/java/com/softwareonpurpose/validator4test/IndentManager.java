@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.craigstockton.validator4test;
+package com.softwareonpurpose.validator4test;
 
 /**
  * Used to manage the level of indentation (4 spaces per level), with clients incrementing/decrementing the level
