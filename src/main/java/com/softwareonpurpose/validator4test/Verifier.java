@@ -40,83 +40,14 @@ public class Verifier {
     /**
      * Provides an instance of an Integer verifier which utilizes the provided IndentManager to format results
      *
-     * @param description   Description of the Integer being verified
-     * @param expected      Expected Integer value
-     * @param actual        Actual Integer value
+     * @param description   Description of the Object being verified
+     * @param expected      Expected Object value
+     * @param actual        Actual Object value
      * @param indentManager IndentManager to use to format results
      * @return New instance of Verifier
      */
-    static Verifier getInstance(String description, Integer expected, Integer actual, IndentManager indentManager) {
-        Reconciler reconciler = Reconciler.getInstance(expected, actual);
-        return new Verifier(description, expected, actual, reconciler, indentManager);
-    }
-
-    /**
-     * Provides an instance of an Boolean verifier which utilizes the provided IndentManager to format results
-     *
-     * @param description   Description of the Boolean being verified
-     * @param expected      Expected Boolean value
-     * @param actual        Actual Boolean value
-     * @param indentManager IndentManager to use to format results
-     * @return New instance of Verifier
-     */
-    static Verifier getInstance(String description, Boolean expected, Boolean actual, IndentManager indentManager) {
-        Reconciler reconciler = Reconciler.getInstance(expected, actual);
-        return new Verifier(description, expected, actual, reconciler, indentManager);
-    }
-
-    /**
-     * Provides an instance of an Long verifier which utilizes the provided IndentManager to format results
-     *
-     * @param description   Description of the Long being verified
-     * @param expected      Expected Long value
-     * @param actual        Actual Long value
-     * @param indentManager IndentManager to use to format results
-     * @return New instance of Verifier
-     */
-
-    static Verifier getInstance(String description, Long expected, Long actual, IndentManager indentManager) {
-        Reconciler reconciler = Reconciler.getInstance(expected, actual);
-        return new Verifier(description, expected, actual, reconciler, indentManager);
-    }
-
-    /**
-     * Provides an instance of an String verifier which utilizes the provided IndentManager to format results
-     *
-     * @param description   Description of the String being verified
-     * @param expected      Expected String value
-     * @param actual        Actual String value
-     * @param indentManager IndentManager to use to format results
-     * @return New instance of Verifier
-     */
-    static Verifier getInstance(String description, String expected, String actual, IndentManager indentManager) {
-        Reconciler reconciler = Reconciler.getInstance(expected, actual);
-        return new Verifier(description, expected, actual, reconciler, indentManager);
-    }
-
-    /**
-     * Provides an instance of an String List verifier which utilizes the provided IndentManager to format results
-     *
-     * @param description   Description of the String List being verified
-     * @param expected      Expected String List
-     * @param actual        Actual String List
-     * @param indentManager IndentManager to use to format results
-     * @return New instance of Verifier
-     */
-    static Verifier getInstance(String description, List<String> expected, List<String> actual, IndentManager indentManager) {
-        String flatExpectedList = getFlatList(expected);
-        String flatActualList = getFlatList(actual);
-        Reconciler reconciler = Reconciler.getInstance(expected, actual);
-        return new Verifier(description, flatExpectedList, flatActualList, reconciler, indentManager);
-    }
-
-    private static String getFlatList(List<String> stringList) {
-        if (stringList == null)
-            return "<null>";
-        String flatExpectedList = "";
-        for (String string : stringList)
-            flatExpectedList += String.format("%s|", string);
-        return flatExpectedList.substring(0, flatExpectedList.lastIndexOf("|"));
+    static Verifier getInstance(String description, Object expected, Object actual, IndentManager indentManager) {
+        return new Verifier(description, expected, actual, Reconciler.getInstance(expected, actual), indentManager);
     }
 
     /**

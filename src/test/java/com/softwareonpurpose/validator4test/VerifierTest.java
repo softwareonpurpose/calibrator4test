@@ -4,19 +4,11 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Test
 public class VerifierTest {
-
-    private static String getFlatList(List<String> stringList) {
-        if (stringList == null)
-            return "<null>";
-        String flatExpectedList = "";
-        for (String string : stringList)
-            flatExpectedList += String.format("%s|", string);
-        return flatExpectedList.substring(0, flatExpectedList.lastIndexOf("|"));
-    }
 
     @Test
     public void sameBooleanValue() {
@@ -139,11 +131,10 @@ public class VerifierTest {
 
     @Test
     public void nullExpectedStringList() {
-        List<String> expectedStringList = null;
         List<String> actualStringList = Arrays.asList("string 1", "string 2");
-        String flatActualStringList = getFlatList(actualStringList);
+        String flatActualStringList = actualStringList.toString();
         Assert.assertEquals(
-                Verifier.getInstance("String", expectedStringList, actualStringList, IndentManager.getInstance())
+                Verifier.getInstance("String", null, actualStringList, IndentManager.getInstance())
                         .verify(), String.format("%s -- Expected: <null>  Actual: %s%n", "String", flatActualStringList),
                 "Null 'Expected' String returns Expected = <null>");
     }
@@ -151,10 +142,9 @@ public class VerifierTest {
     @Test
     public void nullActualStringList() {
         List<String> expectedStringList = Arrays.asList("string 1", "string 2");
-        String flatExpectedStringList = getFlatList(expectedStringList);
-        List<String> actualStringList = null;
+        String flatExpectedStringList = expectedStringList.toString();
         Assert.assertEquals(
-                Verifier.getInstance("String List", expectedStringList, actualStringList, IndentManager.getInstance())
+                Verifier.getInstance("String List", expectedStringList, null, IndentManager.getInstance())
                         .verify(),
                 String.format("%s -- Expected: %s  Actual: <null>%n", "String List", flatExpectedStringList),
                 "Null 'Actual' String List returns Actual = <null>");
@@ -163,9 +153,9 @@ public class VerifierTest {
     @Test
     public void stringListDifferentSize() {
         List<String> expectedStringList = Arrays.asList("string 1", "string 2");
-        String flatExpectedStringList = getFlatList(expectedStringList);
-        List<String> actualStringList = Arrays.asList("string 1");
-        String flatActualStringList = getFlatList(actualStringList);
+        String flatExpectedStringList = expectedStringList.toString();
+        List<String> actualStringList = Collections.singletonList("string 1");
+        String flatActualStringList = actualStringList.toString();
         Assert.assertEquals(
                 Verifier.getInstance("String List", expectedStringList, actualStringList, IndentManager.getInstance())
                         .verify(),
@@ -176,9 +166,9 @@ public class VerifierTest {
     @Test
     public void stringListDifferentValues() {
         List<String> expectedStringList = Arrays.asList("string 1", "string 2");
-        String flatExpectedStringList = getFlatList(expectedStringList);
+        String flatExpectedStringList = expectedStringList.toString();
         List<String> actualStringList = Arrays.asList("string 3", "string 4");
-        String flatActualStringList = getFlatList(actualStringList);
+        String flatActualStringList = actualStringList.toString();
         Assert.assertEquals(
                 Verifier.getInstance("String List", expectedStringList, actualStringList, IndentManager.getInstance())
                         .verify(),
@@ -189,9 +179,9 @@ public class VerifierTest {
     @Test
     public void stringListDifferentOrder() {
         List<String> expectedStringList = Arrays.asList("string 1", "string 2");
-        String flatExpectedStringList = getFlatList(expectedStringList);
+        String flatExpectedStringList = expectedStringList.toString();
         List<String> actualStringList = Arrays.asList("string 2", "string 1");
-        String flatActualStringList = getFlatList(actualStringList);
+        String flatActualStringList = actualStringList.toString();
         Assert.assertEquals(
                 Verifier.getInstance("String List", expectedStringList, actualStringList, IndentManager.getInstance())
                         .verify(),

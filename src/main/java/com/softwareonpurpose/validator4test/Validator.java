@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Craig A. Stockton
- * <p>
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -125,59 +125,11 @@ public abstract class Validator {
     /**
      * Verifies an actual Boolean value, adding to 'Failure' message if verification fails
      *
-     * @param description The Boolean field verified
-     * @param expected    The expected Boolean value
-     * @param actual      The actual Boolean value
+     * @param description Description of Object verified
+     * @param expected    The expected value
+     * @param actual      The actual value
      */
-    protected void verify(String description, Boolean expected, Boolean actual) {
-        String result = Verifier.getInstance(description, expected, actual, getIndentManager()).verify();
-        recordIfFailed(result);
-    }
-
-    /**
-     * Verifies an actual Integer value, adding to 'Failure' message if verification fails
-     *
-     * @param description The Integer field verified
-     * @param expected    The expected Integer value
-     * @param actual      The actual Integer value
-     */
-    protected void verify(String description, Integer expected, Integer actual) {
-        String result = Verifier.getInstance(description, expected, actual, getIndentManager()).verify();
-        recordIfFailed(result);
-    }
-
-    /**
-     * Verifies an actual String list, adding to 'Failure' message if verification fails
-     *
-     * @param description The String list verified
-     * @param expected    The expected String list
-     * @param actual      The actual String list
-     */
-    protected void verify(String description, List<String> expected, List<String> actual) {
-        String result = Verifier.getInstance(description, expected, actual, getIndentManager()).verify();
-        recordIfFailed(result);
-    }
-
-    /**
-     * Verifies an actual Long value, adding to 'Failure' message if verification fails
-     *
-     * @param description The Long field verified
-     * @param expected    The expected Long value
-     * @param actual      The actual Long value
-     */
-    protected void verify(String description, Long expected, Long actual) {
-        String result = Verifier.getInstance(description, expected, actual, getIndentManager()).verify();
-        recordIfFailed(result);
-    }
-
-    /**
-     * Verifies an actual String value, adding to 'Failure' message if verification fails
-     *
-     * @param description The String field verified
-     * @param expected    The expected String value
-     * @param actual      The actual String value
-     */
-    protected void verify(String description, String expected, String actual) {
+    protected void verify(String description, Object expected, Object actual) {
         String result = Verifier.getInstance(description, expected, actual, getIndentManager()).verify();
         recordIfFailed(result);
     }

@@ -1,10 +1,10 @@
 group 'com.craigstockton'
-version '1.0-SNAPSHOT'
+version '1.0.0-SNAPSHOT'
 
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
-version = '1.0'
+version = '1.0.1'
 jar {
     manifest {
         attributes 'Implementation-Title': 'validator4test', 'Implementation-Version': version
@@ -18,6 +18,7 @@ repositories {
 dependencies {
     compile 'org.apache.logging.log4j:log4j-api:2.3'
     compile 'org.apache.logging.log4j:log4j-core:2.3'
+    compile 'org.hamcrest:hamcrest-core:1.3'
     testCompile group: 'org.testng', name: 'testng', version: '6.9.4'
 }
 
