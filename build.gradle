@@ -1,4 +1,4 @@
-group 'com.craigstockton'
+group 'com.softwareonpurpose'
 version '1.0.0-SNAPSHOT'
 
 apply plugin: 'java'
