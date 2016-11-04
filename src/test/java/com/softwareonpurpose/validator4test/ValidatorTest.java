@@ -72,6 +72,30 @@ public class ValidatorTest {
         confirmFail(validator.validate());
     }
 
+    @Test
+    public void expectedNull() {
+        AnObject expected = null;
+        AnObject actual = AnObject.getInstance(true, 9, "String");
+        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        confirmFail(validator.validate());
+    }
+
+    @Test
+    public void actualNull() {
+        AnObject expected = AnObject.getInstance(true, 9, "String");
+        AnObject actual = null;
+        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        confirmFail(validator.validate());
+    }
+
+    @Test
+    public void bothNull() {
+        AnObject expected = null;
+        AnObject actual = null;
+        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        confirmPass(validator.validate());
+    }
+
     private void confirmPass(String result) {
         Assert.assertTrue(result.equals(Validator.PASS), result);
     }

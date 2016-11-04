@@ -195,28 +195,20 @@ public abstract class Validator {
     }
 
     private void executeValidation() {
-        if (expectedMissing() && actualMissing())
-            verify(String.format("Actual '%s' missing", getDescription()), true, actualMissing());
-        else if (expectedMissing() && actualExists())
-            verify(String.format("Unexpected '%s' exists", getDescription()), false, expectedMissing());
-        else if (expectedExists() && actualMissing())
-            verify(String.format("Actual '%s' exists", getDescription()), true, actualExists());
-        else if (expectedExists() && actualExists()) {
+        if (expectedExists() && actualExists()) {
             executeVerifications();
             executeChildValidations();
+        } else {
+            Boolean expected = expectedExists() ? expectedExists() : null;
+            Boolean actual = actualExists() ? actualExists() : null;
+            final String resultMessage = expectedExists() ? "Expected '%s' exists" : actualExists() ? "Unexpected '%s' nonexistent" :
+                    "Actual '%s' expected missing";
+            verify(String.format(resultMessage, getDescription()), expected, actual);
         }
     }
 
     private List<Validator> getChildValidators() {
         return children;
-    }
-
-    private boolean actualMissing() {
-        return !actualExists();
-    }
-
-    private boolean expectedMissing() {
-        return !expectedExists();
     }
 
     private void compileReport() {
