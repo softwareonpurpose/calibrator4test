@@ -81,7 +81,7 @@ public abstract class Validator {
      *
      * @return The 'actual' validatee exists
      */
-    protected boolean actualExists() {
+    protected Boolean actualExists() {
         return actualExists;
     }
 
@@ -90,7 +90,7 @@ public abstract class Validator {
      *
      * @return An instance of the validatee with expected values exists
      */
-    protected boolean expectedExists() {
+    protected Boolean expectedExists() {
         return expectedExists;
     }
 
@@ -199,10 +199,9 @@ public abstract class Validator {
             executeVerifications();
             executeChildValidations();
         } else {
-            Boolean expected = expectedExists() ? expectedExists() : null;
-            Boolean actual = actualExists() ? actualExists() : null;
-            final String resultMessage = expectedExists() ? "Expected %s exists" : actualExists() ? "Unexpected %s nonexistent" :
-                    "Actual %s expected missing";
+            String expected = expectedExists().toString();
+            String actual = actualExists().toString();
+            final String resultMessage = "%s exists";
             verify(String.format(resultMessage, getDescription()), expected, actual);
         }
     }
