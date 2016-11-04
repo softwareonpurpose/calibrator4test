@@ -201,8 +201,8 @@ public abstract class Validator {
         } else {
             Boolean expected = expectedExists() ? expectedExists() : null;
             Boolean actual = actualExists() ? actualExists() : null;
-            final String resultMessage = expectedExists() ? "Expected '%s' exists" : actualExists() ? "Unexpected '%s' nonexistent" :
-                    "Actual '%s' expected missing";
+            final String resultMessage = expectedExists() ? "Expected %s exists" : actualExists() ? "Unexpected %s nonexistent" :
+                    "Actual %s expected missing";
             verify(String.format(resultMessage, getDescription()), expected, actual);
         }
     }
