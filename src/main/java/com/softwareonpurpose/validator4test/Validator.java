@@ -23,7 +23,8 @@ import java.util.List;
 
 public abstract class Validator {
 
-    static final String PASS = "";
+    @SuppressWarnings("WeakerAccess")
+    public static final String PASS = "";
     private final List<Validator> children = new ArrayList<>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
