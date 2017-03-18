@@ -2,6 +2,7 @@ package com.softwareonpurpose.validator4test;
 
 import com.softwareonpurpose.validator4test.mock.AnObject;
 import com.softwareonpurpose.validator4test.mock.AnObjectValidator;
+import com.softwareonpurpose.validator4test.mock.CourseValidator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -76,6 +77,7 @@ public class ValidatorTest {
     public void expectedNull() {
         AnObject expected = null;
         AnObject actual = AnObject.getInstance(true, 9, "String");
+        //noinspection ConstantConditions
         AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
@@ -84,6 +86,7 @@ public class ValidatorTest {
     public void actualNull() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = null;
+        //noinspection ConstantConditions
         AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
@@ -92,7 +95,17 @@ public class ValidatorTest {
     public void bothNull() {
         AnObject expected = null;
         AnObject actual = null;
+        //noinspection ConstantConditions
         AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        confirmPass(validator.validate());
+    }
+
+    @Test
+    public void courseValidator() {
+        AnObject expected = AnObject.getInstance(true, 9, "String");
+        AnObject actual = AnObject.getInstance(true, 9, "String");
+        //noinspection ConstantConditions
+        CourseValidator validator = CourseValidator.getInstance(expected, actual);
         confirmPass(validator.validate());
     }
 

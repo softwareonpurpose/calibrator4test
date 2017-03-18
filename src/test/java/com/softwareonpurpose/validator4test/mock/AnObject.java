@@ -1,5 +1,7 @@
 package com.softwareonpurpose.validator4test.mock;
 
+import com.google.gson.Gson;
+
 public class AnObject {
 
     private final boolean aBoolean;
@@ -22,19 +24,45 @@ public class AnObject {
         return new AnObject(aBoolean, anInteger, aString, anObject);
     }
 
-    public boolean getBoolean() {
+    Boolean getBoolean() {
         return aBoolean;
     }
 
-    public int getInteger() {
+    Integer getInteger() {
         return anInteger;
     }
 
-    public String getString() {
+    String getString() {
         return aString;
     }
 
-    public AnObject getObject() {
+    AnObject getObject() {
         return object;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != AnObject.class) {
+            return false;
+        }
+        AnObject castObj = (AnObject) obj;
+        boolean equals = ((this.getBoolean() == null && castObj.getBoolean() == null) || (this.getBoolean() != null && this.getBoolean().equals(castObj.getBoolean())));
+        equals &= ((this.getInteger() == null && castObj.getInteger() == null) || (this.getInteger() != null && this.getInteger().equals(castObj.getInteger())));
+        equals &= ((this.getString() == null && castObj.getString() == null) || (this.getString() != null && this.getString().equals(castObj.getString())));
+        equals &= ((this.getObject() == null && castObj.getObject() == null) || (this.getObject() != null && this.getObject().equals(castObj.getObject())));
+        return equals;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 }

@@ -15,9 +15,8 @@
  */
 package com.softwareonpurpose.validator4test;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-
-public class Reconciler {
+@SuppressWarnings("SpellCheckingInspection")
+class Reconciler {
 
     private final static int RECONCILED = 0;
     private final static int EXPECTED_NULL = 1;
@@ -51,6 +50,6 @@ public class Reconciler {
             return EXPECTED_NULL;
         if (actual == null)
             return ACTUAL_NULL;
-        return equalTo(actual).matches(expected) ? RECONCILED : DISCREPANCY;
+        return actual.equals(expected) ? RECONCILED : DISCREPANCY;
     }
 }

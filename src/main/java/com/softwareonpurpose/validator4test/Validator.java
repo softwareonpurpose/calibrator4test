@@ -23,7 +23,7 @@ import java.util.List;
 
 public abstract class Validator {
 
-    public static final String PASS = "";
+    static final String PASS = "";
     private final List<Validator> children = new ArrayList<>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
@@ -99,7 +99,7 @@ public abstract class Validator {
      *
      * @return For child validators, a list of verification failures; for root validators, a validation report
      */
-    public String validate() {
+    protected String validate() {
         return validationBehavior.execute();
     }
 

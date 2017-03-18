@@ -19,13 +19,14 @@ import org.apache.logging.log4j.LogManager;
 
 import java.util.List;
 
-public class Verifier {
+class Verifier {
 
     private final static String passedMessage = "";
     private final static int RECONCILED = 0;
     private final IndentManager indentManager;
     private final String verificationDescription;
     private final String message;
+    @SuppressWarnings("SpellCheckingInspection")
     private Reconciler reconciler;
 
     private Verifier(String description, Object expected, Object actual, Reconciler reconciler, IndentManager formatter) {
@@ -55,7 +56,7 @@ public class Verifier {
      *
      * @return Empty String ("") if the values reconcile; a message containing the two values if there is a discrepancy
      */
-    protected String verify() {
+    String verify() {
         LogManager.getLogger(this.getClass()).info(indentManager.format(verificationDescription));
         Integer reconciliation = reconciler.reconcile();
         if (reconciliation.equals(RECONCILED))
