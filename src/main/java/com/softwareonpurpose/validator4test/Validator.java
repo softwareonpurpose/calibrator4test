@@ -100,7 +100,7 @@ public abstract class Validator {
      *
      * @return For child validators, a list of verification failures; for root validators, a validation report
      */
-    protected String validate() {
+    public String validate() {
         return validationBehavior.execute();
     }
 
