@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Craig A. Stockton
+ * Copyright 2017 Craig A. Stockton
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.softwareonpurpose.validator4test;
 /**
  * Used to manage the level of indentation (4 spaces per level), with clients incrementing/decrementing the level
  */
-public class IndentManager {
+class IndentManager {
 
     private final int spacesPerLevel;
     private int indentationLevel;

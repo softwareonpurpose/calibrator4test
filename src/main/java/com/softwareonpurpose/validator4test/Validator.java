@@ -1,12 +1,12 @@
 /**
- * Copyright 2015 Craig A. Stockton
- * <p/>
+ * Copyright 2017 Craig A. Stockton
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * <p/>
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- * <p/>
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,8 +15,8 @@
  */
 package com.softwareonpurpose.validator4test;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +100,7 @@ public abstract class Validator {
      *
      * @return For child validators, a list of verification failures; for root validators, a validation report
      */
+    @SuppressWarnings("WeakerAccess")
     public String validate() {
         return validationBehavior.execute();
     }
@@ -119,7 +120,8 @@ public abstract class Validator {
      *
      * @param description Free-form description of a known issue (e.g. "Bug #999 - login fails", "Config issues in 'Stage'")
      */
-    protected void addKnownIssue(String description) {
+    @SuppressWarnings("WeakerAccess")
+    protected void addKnownIssue(@SuppressWarnings("SameParameterValue") String description) {
         knownIssues.append(getIndentManager().format(String.format("%s -- %s", className, description)));
     }
 
@@ -192,7 +194,7 @@ public abstract class Validator {
     }
 
     private Logger getLogger() {
-        return LogManager.getLogger(this.getClass());
+        return LoggerFactory.getLogger(this.getClass());
     }
 
     private void executeValidation() {

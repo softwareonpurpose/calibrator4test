@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Craig A. Stockton
+ * Copyright 2017 Craig A. Stockton
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,7 @@
  */
 package com.softwareonpurpose.validator4test;
 
-import org.apache.logging.log4j.LogManager;
-
-import java.util.List;
+import org.slf4j.LoggerFactory;
 
 class Verifier {
 
@@ -57,7 +55,7 @@ class Verifier {
      * @return Empty String ("") if the values reconcile; a message containing the two values if there is a discrepancy
      */
     String verify() {
-        LogManager.getLogger(this.getClass()).info(indentManager.format(verificationDescription));
+        LoggerFactory.getLogger(this.getClass()).info(indentManager.format(verificationDescription));
         Integer reconciliation = reconciler.reconcile();
         if (reconciliation.equals(RECONCILED))
             return passedMessage;
