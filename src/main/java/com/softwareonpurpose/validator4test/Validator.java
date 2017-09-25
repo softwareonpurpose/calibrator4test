@@ -194,7 +194,7 @@ public abstract class Validator {
     }
 
     private Logger getLogger() {
-        return LoggerFactory.getLogger(this.getClass());
+        return LoggerFactory.getLogger("");
     }
 
     private void executeValidation() {

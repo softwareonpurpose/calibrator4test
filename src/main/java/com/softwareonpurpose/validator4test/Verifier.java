@@ -55,7 +55,7 @@ class Verifier {
      * @return Empty String ("") if the values reconcile; a message containing the two values if there is a discrepancy
      */
     String verify() {
-        LoggerFactory.getLogger(this.getClass()).info(indentManager.format(verificationDescription));
+        LoggerFactory.getLogger("").info(indentManager.format(verificationDescription));
         Integer reconciliation = reconciler.reconcile();
         if (reconciliation.equals(RECONCILED))
             return passedMessage;
