@@ -146,10 +146,12 @@ public abstract class Validator {
     }
 
     private void logValidation() {
-        String description = getIndentManager().isAtRootLevel() ?
-                String.format("%nVALIDATE:%n%s", getDescription()) :
-                getDescription();
-        getLogger().info(getIndentManager().format(description));
+        if (getIndentManager().isAtRootLevel()) {
+            getLogger().info("VALIDATE:");
+            getLogger().info(getDescription());
+        } else {
+            getLogger().info(getIndentManager().format(getDescription()));
+        }
     }
 
     private String getKnownIssues() {
