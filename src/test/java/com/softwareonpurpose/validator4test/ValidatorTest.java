@@ -102,6 +102,7 @@ public class ValidatorTest {
 
     @Test
     public void courseValidator() {
+        Validator.setStyle(Validator.ValidationLoggingStyle.BDD);
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
         //noinspection ConstantConditions

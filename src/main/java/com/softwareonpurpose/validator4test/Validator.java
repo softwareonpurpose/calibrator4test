@@ -25,6 +25,7 @@ public abstract class Validator {
 
     @SuppressWarnings("WeakerAccess")
     public static final String PASS = "";
+    private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
     private final List<Validator> children = new ArrayList<>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
@@ -147,7 +148,7 @@ public abstract class Validator {
 
     private void logValidation() {
         if (getIndentManager().isAtRootLevel()) {
-            getLogger().info("VALIDATE:");
+            getLogger().info(String.format("%s:", validationLoggingStyle));
             getLogger().info(getDescription());
         } else {
             getLogger().info(getIndentManager().format(getDescription()));
@@ -232,6 +233,16 @@ public abstract class Validator {
         failures.append(getIndentManager().format(result));
     }
 
+    public static void setStyle(String style) {
+        switch (style.toUpperCase()) {
+            case ValidationLoggingStyle.BDD:
+                validationLoggingStyle = ValidationLoggingStyle.BDD;
+                return;
+            default:
+                validationLoggingStyle = ValidationLoggingStyle.STANDARD;
+        }
+    }
+
         /*----  Private Validation Behaviors      -----*/
 
     private interface ValidationBehavior {
@@ -265,4 +276,8 @@ public abstract class Validator {
         }
     }
 
+    public class ValidationLoggingStyle {
+        private final static String STANDARD = "VALIDATE";
+        public final static String BDD = "THEN";
+    }
 }
