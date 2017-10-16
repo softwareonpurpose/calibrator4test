@@ -72,6 +72,16 @@ public abstract class Validator {
         this(description, expected, actual, null);
     }
 
+    public static void setStyle(String style) {
+        switch (style.toUpperCase()) {
+            case ValidationLoggingStyle.BDD:
+                validationLoggingStyle = ValidationLoggingStyle.BDD;
+                return;
+            default:
+                validationLoggingStyle = ValidationLoggingStyle.STANDARD;
+        }
+    }
+
     /**
      * Execute a list of verifications of the Actual object using the Expected object.  Implemented in the inheritor of
      * Validator.  Intended to contain ONLY calls to the verify() methods.
@@ -148,7 +158,7 @@ public abstract class Validator {
 
     private void logValidation() {
         if (getIndentManager().isAtRootLevel()) {
-            getLogger().info(String.format("%s:", validationLoggingStyle));
+            getLogger().info(String.format("%n%s:", validationLoggingStyle));
             getLogger().info(getDescription());
         } else {
             getLogger().info(getIndentManager().format(getDescription()));
@@ -233,16 +243,6 @@ public abstract class Validator {
         failures.append(getIndentManager().format(result));
     }
 
-    public static void setStyle(String style) {
-        switch (style.toUpperCase()) {
-            case ValidationLoggingStyle.BDD:
-                validationLoggingStyle = ValidationLoggingStyle.BDD;
-                return;
-            default:
-                validationLoggingStyle = ValidationLoggingStyle.STANDARD;
-        }
-    }
-
         /*----  Private Validation Behaviors      -----*/
 
     private interface ValidationBehavior {
@@ -277,7 +277,7 @@ public abstract class Validator {
     }
 
     public class ValidationLoggingStyle {
-        private final static String STANDARD = "VALIDATE";
         public final static String BDD = "THEN";
+        private final static String STANDARD = "VALIDATE";
     }
 }
