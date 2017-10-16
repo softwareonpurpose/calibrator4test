@@ -157,8 +157,9 @@ public abstract class Validator {
     }
 
     private void logValidation() {
+        getLogger().info("\n");
         if (getIndentManager().isAtRootLevel()) {
-            getLogger().info(String.format("%n%s:", validationLoggingStyle));
+            getLogger().info(String.format("%s:", validationLoggingStyle));
             getLogger().info(getDescription());
         } else {
             getLogger().info(getIndentManager().format(getDescription()));
