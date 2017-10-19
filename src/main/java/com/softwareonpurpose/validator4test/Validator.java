@@ -71,6 +71,11 @@ public abstract class Validator {
         this(description, expected, actual, null);
     }
 
+    /**
+     * Set the 'Style' to be used in logging the Validation event.
+     * @param style     Validator.ValidationLoggingStyle
+     */
+    @SuppressWarnings("WeakerAccess")
     public static void setStyle(String style) {
         switch (style.toUpperCase()) {
             case ValidationLoggingStyle.BDD:
