@@ -43,20 +43,19 @@ public abstract class Validator {
      * @param description     A description of the object validated
      * @param expected        Object representing an expected state
      * @param actual          Object representing an actual state
-     * @param parentValidator The parent Validator
+     * @param parentValidator Parent Validator
      */
     protected Validator(String description, Object expected, Object actual, Validator parentValidator) {
         this.expectedExists = expected != null;
         this.actualExists = actual != null;
-        IndentManager indentManager = parentValidator == null ? null : parentValidator.getIndentManager();
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
-        if (indentManager == null) {
+        if (parentValidator == null) {
             validationBehavior = new RootBehavior();
             this.indentManager = IndentManager.getInstance();
         } else {
             validationBehavior = new ChildBehavior();
-            this.indentManager = indentManager;
+            this.indentManager = parentValidator.getIndentManager();
         }
         this.description = description;
     }
@@ -129,7 +128,8 @@ public abstract class Validator {
      * Add a description of a known issue which accounts for a verification failure (e.g. bug).  This should be removed
      * once it is noticed that the verification failure NO longer occurs.
      *
-     * @param description Free-form description of a known issue (e.g. "Bug #999 - login fails", "Config issues in 'Stage'")
+     * @param description Free-form description of a known issue (e.g. "Bug #999 - login fails", "Config issues in
+     *                    'Stage'")
      */
     @SuppressWarnings("WeakerAccess")
     protected void addKnownIssue(@SuppressWarnings("SameParameterValue") String description) {
@@ -228,10 +228,9 @@ public abstract class Validator {
     }
 
     private void compileReport() {
-        if (isPassed() && !issuesFound())
-            return;
-        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED",
-                isPassed() && issuesFound() ? "(known issues to be regressed)" : ""));
+        if (isPassed() && !issuesFound()) return;
+        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", isPassed() && issuesFound
+                () ? "(known issues to be regressed)" : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
             report.append("KNOWN ISSUES:");
