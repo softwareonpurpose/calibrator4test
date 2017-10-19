@@ -16,7 +16,8 @@
 package com.softwareonpurpose.validator4test;
 
 /**
- * Used to manage the level of indentation (4 spaces per level), with clients incrementing/decrementing the level
+ * Used to manage the level of indentation (2 spaces per level by default), with clients incrementing/decrementing
+ * the level
  */
 class IndentManager {
 
@@ -28,28 +29,28 @@ class IndentManager {
     }
 
     /**
-     * Return a new instance of IndentManager
+     * Return a new instance of IndentManager with default number of spaces per level
      *
      * @return Instance of IndentManger
      */
-    static IndentManager getInstance() {
+    public static IndentManager getInstance() {
         return new IndentManager(2);
     }
 
     /**
-     * Return a new instance of IndentManager
+     * Return a new instance of IndentManager with specified number of spaces per level
      *
      * @param spacesPerLevel Number of spaces to indent per level of indentation
      * @return Instance of IndentManager
      */
-    static IndentManager getInstance(int spacesPerLevel) {
+    public static IndentManager getInstance(int spacesPerLevel) {
         return new IndentManager(spacesPerLevel);
     }
 
     /**
      * Increment indentation level by one
      */
-    void increment() {
+    public void increment() {
         increment(1);
     }
 
@@ -58,26 +59,25 @@ class IndentManager {
      *
      * @param numberOfLevels Number of levels to increment the current level
      */
-    void increment(int numberOfLevels) {
+    public void increment(int numberOfLevels) {
         indentationLevel += numberOfLevels;
     }
 
     /**
      * Decrement indentation level by one
      */
-    void decrement() {
-        if (indentationLevel > 0)
-            indentationLevel--;
+    public void decrement() {
+        if (indentationLevel > 0) indentationLevel -= 1;
     }
 
     /**
      * Format a line, padded with current indentation
      *
      * @param line The line of text to be formatted
-     * @return
+     * @return Formatted String value
      */
-    String format(String line) {
-        boolean lineIsNullOrEmpty = line == null || line.length() == 0;
+    public String format(String line) {
+        boolean lineIsNullOrEmpty = ((line == null) || (line.length() == 0));
         return lineIsNullOrEmpty ? "" : String.format("%s%s", getIndentation(), line);
     }
 
@@ -85,7 +85,7 @@ class IndentManager {
         return new String(new char[spacesPerLevel * indentationLevel]).replace('\0', ' ');
     }
 
-    boolean isAtRootLevel() {
+    public boolean isAtRootLevel() {
         return indentationLevel == 0;
     }
 }
