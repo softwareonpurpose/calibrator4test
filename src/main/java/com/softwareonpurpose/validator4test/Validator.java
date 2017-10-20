@@ -15,6 +15,7 @@
  */
 package com.softwareonpurpose.validator4test;
 
+import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +74,8 @@ public abstract class Validator {
 
     /**
      * Set the 'Style' to be used in logging the Validation event.
-     * @param style     Validator.ValidationLoggingStyle
+     *
+     * @param style Validator.ValidationLoggingStyle
      */
     @SuppressWarnings("WeakerAccess")
     public static void setStyle(String style) {

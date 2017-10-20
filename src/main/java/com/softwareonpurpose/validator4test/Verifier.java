@@ -15,6 +15,7 @@
  */
 package com.softwareonpurpose.validator4test;
 
+import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.LoggerFactory;
 
 class Verifier {
@@ -27,12 +28,13 @@ class Verifier {
     @SuppressWarnings("SpellCheckingInspection")
     private Reconciler reconciler;
 
-    private Verifier(String description, Object expected, Object actual, Reconciler reconciler, IndentManager formatter) {
+    private Verifier(String description, Object expected, Object actual, Reconciler reconciler, IndentManager
+            formatter) {
         this.indentManager = formatter;
         String expectedDescription = expected == null ? "<null>" : expected.toString();
         this.verificationDescription = String.format("%s - %s", description, expectedDescription);
-        this.message = String.format("%s -- Expected: %s  Actual: %s%n", description, expectedDescription,
-                actual == null ? "<null>" : actual.toString());
+        this.message = String.format("%s -- Expected: %s  Actual: %s%n", description, expectedDescription, actual ==
+                null ? "<null>" : actual.toString());
         this.reconciler = reconciler;
     }
 
@@ -57,8 +59,7 @@ class Verifier {
     String verify() {
         LoggerFactory.getLogger("").info(indentManager.format(verificationDescription));
         Integer reconciliation = reconciler.reconcile();
-        if (reconciliation.equals(RECONCILED))
-            return passedMessage;
+        if (reconciliation.equals(RECONCILED)) return passedMessage;
         return message;
     }
 }
