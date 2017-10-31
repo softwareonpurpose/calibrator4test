@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 class Verifier {
 
-    private final static String passedMessage = "";
+    final static String PASS = "";
     private final static int RECONCILED = 0;
     private final IndentManager indentManager;
     private final String verificationDescription;
@@ -59,7 +59,7 @@ class Verifier {
     String verify() {
         LoggerFactory.getLogger("").info(indentManager.format(verificationDescription));
         Integer reconciliation = reconciler.reconcile();
-        if (reconciliation.equals(RECONCILED)) return passedMessage;
+        if (reconciliation.equals(RECONCILED)) return PASS;
         return message;
     }
 }

@@ -22,10 +22,11 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.softwareonpurpose.validator4test.Verifier.PASS;
+
 public abstract class Validator {
 
     @SuppressWarnings("WeakerAccess")
-    public static final String PASS = "";
     private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
     private final List<Validator> children = new ArrayList<>();
     private final IndentManager indentManager;
@@ -283,8 +284,9 @@ public abstract class Validator {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public class ValidationLoggingStyle {
         public final static String BDD = "THEN";
-        private final static String STANDARD = "VALIDATE";
+        public final static String STANDARD = "VALIDATE";
     }
 }
