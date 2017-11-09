@@ -22,10 +22,9 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.softwareonpurpose.validator4test.Verifier.PASS;
-
 public abstract class Validator {
 
+    public static final String PASS = "";
     @SuppressWarnings("WeakerAccess")
     private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
     private final List<Validator> children = new ArrayList<>();
