@@ -15,6 +15,7 @@
  */
 package com.softwareonpurpose.validator4test;
 
+import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,8 +24,8 @@ import java.util.List;
 
 public abstract class Validator {
 
-    @SuppressWarnings("WeakerAccess")
     public static final String PASS = "";
+    @SuppressWarnings("WeakerAccess")
     private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
     private final List<Validator> children = new ArrayList<>();
     private final IndentManager indentManager;
@@ -43,20 +44,19 @@ public abstract class Validator {
      * @param description     A description of the object validated
      * @param expected        Object representing an expected state
      * @param actual          Object representing an actual state
-     * @param parentValidator The parent Validator
+     * @param parentValidator Parent Validator
      */
     protected Validator(String description, Object expected, Object actual, Validator parentValidator) {
         this.expectedExists = expected != null;
         this.actualExists = actual != null;
-        IndentManager indentManager = parentValidator == null ? null : parentValidator.getIndentManager();
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
-        if (indentManager == null) {
+        if (parentValidator == null) {
             validationBehavior = new RootBehavior();
             this.indentManager = IndentManager.getInstance();
         } else {
             validationBehavior = new ChildBehavior();
-            this.indentManager = indentManager;
+            this.indentManager = parentValidator.getIndentManager();
         }
         this.description = description;
     }
@@ -72,6 +72,12 @@ public abstract class Validator {
         this(description, expected, actual, null);
     }
 
+    /**
+     * Set the 'Style' to be used in logging the Validation event.
+     *
+     * @param style Validator.ValidationLoggingStyle
+     */
+    @SuppressWarnings("WeakerAccess")
     public static void setStyle(String style) {
         switch (style.toUpperCase()) {
             case ValidationLoggingStyle.BDD:
@@ -129,7 +135,8 @@ public abstract class Validator {
      * Add a description of a known issue which accounts for a verification failure (e.g. bug).  This should be removed
      * once it is noticed that the verification failure NO longer occurs.
      *
-     * @param description Free-form description of a known issue (e.g. "Bug #999 - login fails", "Config issues in 'Stage'")
+     * @param description Free-form description of a known issue (e.g. "Bug #999 - login fails", "Config issues in
+     *                    'Stage'")
      */
     @SuppressWarnings("WeakerAccess")
     protected void addKnownIssue(@SuppressWarnings("SameParameterValue") String description) {
@@ -228,10 +235,9 @@ public abstract class Validator {
     }
 
     private void compileReport() {
-        if (isPassed() && !issuesFound())
-            return;
-        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED",
-                isPassed() && issuesFound() ? "(known issues to be regressed)" : ""));
+        if (isPassed() && !issuesFound()) return;
+        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", isPassed() && issuesFound
+                () ? "(known issues to be regressed)" : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
             report.append("KNOWN ISSUES:");
@@ -277,8 +283,9 @@ public abstract class Validator {
         }
     }
 
+    @SuppressWarnings("WeakerAccess")
     public class ValidationLoggingStyle {
         public final static String BDD = "THEN";
-        private final static String STANDARD = "VALIDATE";
+        public final static String STANDARD = "VALIDATE";
     }
 }

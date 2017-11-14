@@ -1,10 +1,10 @@
 group 'com.softwareonpurpose'
-version '1.0.0-SNAPSHOT'
 
 apply plugin: 'java'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.9
 version = '0.0.1'
+
 jar {
     manifest {
         attributes 'Implementation-Title': 'validator4test', 'Implementation-Version': version
@@ -21,6 +21,11 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.25'
     compile 'com.google.code.gson:gson:2.8.0'
     testCompile group: 'org.testng', name: 'testng', version: '6.9.4'
+    compile files('./src/main/resources/indentmanager-0.0.1.jar')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.3.1'
 }
 
 test {
