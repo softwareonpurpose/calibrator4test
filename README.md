@@ -38,7 +38,7 @@ For validation of members that are NOT Object wrappers:
 ```
 addChildValidator(ChildValidator.getInstance(expected.getChildMember(), actual.getChildMember());
 ``` 
- - child validators are added to a list which is processed when the public method `validate` is called
+ - child validators are added to a list which is processed when the public method `validate()` is called
  
 #### Validation
  1. The Validator description is logged
