@@ -43,13 +43,14 @@ addChildValidator(ChildValidator.getInstance(expected.getChildMember(), actual.g
 #### Validation Steps
  1. The Validator description is logged
  2. Each verification is logged (member description and expected value)
- 3. Each verification failure is added appended to a 'failure' String (returned by `validate()`)
- 4. Steps 1-3 are completed for each child validator (which can themselves contain child validators)
- 5. The String containing the compiled list of all failures is returned
+ 3. Each verification failure is appended to a 'failure' String (returned by `validate()`)
+ 4. Steps 1-3 are completed for each child validator (which can contain child validators of their own)
+ 5. The 'failure' String containing the compiled list of all failures is returned
 
 #### Known Issues (discouraged):
-Though use is discouraged, `addKnownIssue()` can be used in cases where a test failure is acceptable.  The reason that this it is considered bad practice (and an impediment to Continuous Delivery) to allow failures to occur without addressing them and getting the project under test back to "green".  
+Though use is discouraged, `addKnownIssue(String description)` can be used in cases where a test failure may be expected and acceptable.  The reason that this it is considered bad practice (aside from the fact that it is an impediment to Continuous Delivery), is that it leaves test resuls in a failing state as if this were an acceptable situation (which it should NOT be)
+
 At the time of validation, 
- - if a failure occurs, then the known issue will be included in the Assertion message.
+ - if a failure occurs, then the known issue will be included in the Assertion message to mitigate costly investigation of the failure
  - if the known issue has been addressed so that the test SHOULD pass, the known issue will cause a test failure with a message indicating that the issue has been addressed and should be manually regressed
- - once confirmed, the addition of the 'known issue' must be removed from the validator to allow it to pass
+ - once it is confirmed that the issue has been addressed successfully, then the addition of the 'known issue' must be removed from the validator to allow the supported tests to pass
