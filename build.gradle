@@ -3,7 +3,7 @@ group 'com.softwareonpurpose'
 apply plugin: 'java'
 
 sourceCompatibility = 1.9
-version = '0.0.1'
+version = '1.0.0'
 
 jar {
     manifest {
