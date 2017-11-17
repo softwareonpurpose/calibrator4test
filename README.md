@@ -40,7 +40,7 @@ addChildValidator(ChildValidator.getInstance(expected.getChildMember(), actual.g
 ``` 
  - child validators are added to a list which is processed when the public method `validate()` is called
  
-#### Validation
+#### Validation Steps
  1. The Validator description is logged
  2. Each verification is logged (member description and expected value)
  3. Each verification failure is added appended to a 'failure' String (returned by `validate()`)
