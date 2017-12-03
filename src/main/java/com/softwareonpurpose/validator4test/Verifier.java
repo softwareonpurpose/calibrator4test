@@ -15,7 +15,6 @@
  */
 package com.softwareonpurpose.validator4test;
 
-import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.LoggerFactory;
 
 class Verifier {

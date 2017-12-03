@@ -15,7 +15,6 @@
  */
 package com.softwareonpurpose.validator4test;
 
-import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -250,7 +249,7 @@ public abstract class Validator {
         failures.append(getIndentManager().format(result));
     }
 
-        /*----  Private Validation Behaviors      -----*/
+    /*----  Private Validation Behaviors      -----*/
 
     private interface ValidationBehavior {
 

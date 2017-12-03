@@ -1,6 +1,5 @@
 package com.softwareonpurpose.validator4test;
 
-import com.softwareonpurpose.indentmanager.IndentManager;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
