@@ -41,7 +41,7 @@ class Reconciler {
 
     /**
      * @return Integer value indicating the reconciliation result (0 - Reconciled; 1 - Expected is null; 2 - Actual is
-     * null; 3 - Discrepancy)
+     * null; 3 - Discrepancy exists)
      */
     int reconcile() {
         if (expected == null && actual == null)
