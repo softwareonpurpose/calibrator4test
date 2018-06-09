@@ -7,7 +7,7 @@ version = '1.0.1'
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'validator4test', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'calibrator4test', 'Implementation-Version': version
     }
 }
 

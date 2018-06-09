@@ -1,8 +1,8 @@
-package com.softwareonpurpose.validator4test;
+package com.softwareonpurpose.calibrator4test;
 
-import com.softwareonpurpose.validator4test.mock.AnObject;
-import com.softwareonpurpose.validator4test.mock.AnObjectValidator;
-import com.softwareonpurpose.validator4test.mock.CourseValidator;
+import com.softwareonpurpose.calibrator4test.mock.AnObject;
+import com.softwareonpurpose.calibrator4test.mock.AnObjectCalibrator;
+import com.softwareonpurpose.calibrator4test.mock.CourseCalibrator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -13,7 +13,7 @@ public class CalibratorTest {
     public void rootOnlyValidator_pass() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmPass(validator.validate());
     }
 
@@ -21,7 +21,7 @@ public class CalibratorTest {
     public void rootOnlyValidator_fail() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(false, 0, "Not String");
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
@@ -30,7 +30,7 @@ public class CalibratorTest {
     public void rootOnlyValidator_knownIssue() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         validator.addKnownIssue("Known Bug Issue");
         confirmFail(validator.validate());
     }
@@ -40,7 +40,7 @@ public class CalibratorTest {
         AnObject child = AnObject.getInstance(true, 5, "Child String");
         AnObject expected = AnObject.getInstance(true, 9, "String", child);
         AnObject actual = AnObject.getInstance(true, 9, "String", child);
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmPass(validator.validate());
     }
 
@@ -49,7 +49,7 @@ public class CalibratorTest {
         AnObject child = AnObject.getInstance(true, 5, "Child String");
         AnObject expected = AnObject.getInstance(true, 9, "String", child);
         AnObject actual = AnObject.getInstance(false, 9, "String", child);
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
@@ -59,7 +59,7 @@ public class CalibratorTest {
         AnObject actualChild = AnObject.getInstance(false, 0, "No String");
         AnObject expected = AnObject.getInstance(true, 9, "String", expectedChild);
         AnObject actual = AnObject.getInstance(true, 9, "String", actualChild);
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
@@ -69,7 +69,7 @@ public class CalibratorTest {
         AnObject actualChild = AnObject.getInstance(false, 0, "No String");
         AnObject expected = AnObject.getInstance(true, 9, "String", expectedChild);
         AnObject actual = AnObject.getInstance(false, 2, "No String", actualChild);
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
@@ -78,7 +78,7 @@ public class CalibratorTest {
         AnObject expected = null;
         AnObject actual = AnObject.getInstance(true, 9, "String");
         //noinspection ConstantConditions
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
@@ -87,7 +87,7 @@ public class CalibratorTest {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = null;
         //noinspection ConstantConditions
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
@@ -96,25 +96,25 @@ public class CalibratorTest {
         AnObject expected = null;
         AnObject actual = null;
         //noinspection ConstantConditions
-        AnObjectValidator validator = AnObjectValidator.getInstance(expected, actual);
+        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
         confirmPass(validator.validate());
     }
 
     @Test
     public void courseValidator() {
-        Validator.setStyle(Validator.ValidationLoggingStyle.BDD);
+        Calibrator.setStyle(Calibrator.ValidationLoggingStyle.BDD);
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
         //noinspection ConstantConditions
-        CourseValidator validator = CourseValidator.getInstance(expected, actual);
+        CourseCalibrator validator = CourseCalibrator.getInstance(expected, actual);
         confirmPass(validator.validate());
     }
 
     private void confirmPass(String result) {
-        Assert.assertTrue(result.equals(Validator.PASS), result);
+        Assert.assertTrue(result.equals(Calibrator.PASS), result);
     }
 
     private void confirmFail(String result) {
-        Assert.assertFalse(result.equals(Validator.PASS), result);
+        Assert.assertFalse(result.equals(Calibrator.PASS), result);
     }
 }
