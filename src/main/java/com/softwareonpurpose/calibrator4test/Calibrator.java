@@ -152,7 +152,8 @@ public abstract class Calibrator {
      */
     protected void verify(String description, Object expected, Object actual) {
         String result = Verifier.construct(description, expected, actual, getIndentManager()).verify();
-        recordIfFailed(result);
+        String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : PASS;
+        failures.append(getIndentManager().format(formattedResult));
     }
 
     private IndentManager getIndentManager() {
@@ -244,9 +245,13 @@ public abstract class Calibrator {
         }
     }
 
-    private void recordIfFailed(String result) {
-        result = result.length() > 0 ? String.format("%s: %s", className, result) : PASS;
-        failures.append(getIndentManager().format(result));
+    /***
+     * Provide values externally to indicate the type of logging to use
+     */
+    @SuppressWarnings("WeakerAccess")
+    public class ValidationLoggingStyle {
+        public final static String BDD = "THEN";
+        public final static String STANDARD = "VALIDATE";
     }
 
     /*----  Private Validation Behaviors      -----*/
@@ -280,14 +285,5 @@ public abstract class Calibrator {
             decrementIndentation();
             return getFailures();
         }
-    }
-
-    /***
-     * Provide values externally to indicate the type of logging to use
-     */
-    @SuppressWarnings("WeakerAccess")
-    public class ValidationLoggingStyle {
-        public final static String BDD = "THEN";
-        public final static String STANDARD = "VALIDATE";
     }
 }
