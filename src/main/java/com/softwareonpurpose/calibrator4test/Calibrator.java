@@ -184,7 +184,7 @@ public abstract class Calibrator {
     }
 
     private void compileChildIssues() {
-        for (Calibrator child : getChildCalibrators()) {
+        for (Calibrator child : children) {
             knownIssues.append(child.getKnownIssues());
         }
     }
@@ -206,7 +206,7 @@ public abstract class Calibrator {
     }
 
     private void executeChildValidations() {
-        for (Calibrator calibrator : getChildCalibrators()) {
+        for (Calibrator calibrator : children) {
             failures.append(calibrator.validate());
         }
         compileChildIssues();
@@ -234,10 +234,6 @@ public abstract class Calibrator {
             final String resultMessage = "%s exists";
             verify(String.format(resultMessage, getDescription()), expected, actual);
         }
-    }
-
-    private List<Calibrator> getChildCalibrators() {
-        return children;
     }
 
     private void compileReport() {
