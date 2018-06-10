@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Craig A. Stockton
+ * Copyright 2018 Craig A. Stockton
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,24 +21,23 @@ class Verifier {
 
     final static String PASS = "";
     private final static Integer RECONCILED = 0;
+    private final static String failureFormat = "%s -- Expected: %s  Actual: %s%n";
     private final IndentManager indentManager;
     private final String verificationDescription;
     private final String message;
     @SuppressWarnings("SpellCheckingInspection")
     private Reconciler reconciler;
 
-    private Verifier(String description, Object expected, Object actual, Reconciler reconciler, IndentManager
-            formatter) {
+    private Verifier(String description, Object expected, Object actual, IndentManager formatter) {
         this.indentManager = formatter;
         String expectedDescription = expected == null ? "<null>" : expected.toString();
         this.verificationDescription = String.format("%s - %s", description, expectedDescription);
-        this.message = String.format("%s -- Expected: %s  Actual: %s%n", description, expectedDescription, actual ==
-                null ? "<null>" : actual.toString());
-        this.reconciler = reconciler;
+        this.message = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
+        this.reconciler = Reconciler.construct(expected, actual);
     }
 
     /**
-     * Provides an instance of an Integer verifier which utilizes the provided IndentManager to format results
+     * Provides an instance of an Verifier which utilizes the an IndentManager to format results
      *
      * @param description   Description of the Object being verified
      * @param expected      Expected Object value
@@ -47,7 +46,7 @@ class Verifier {
      * @return New instance of Verifier
      */
     static Verifier construct(String description, Object expected, Object actual, IndentManager indentManager) {
-        return new Verifier(description, expected, actual, Reconciler.construct(expected, actual), indentManager);
+        return new Verifier(description, expected, actual, indentManager);
     }
 
     /**
