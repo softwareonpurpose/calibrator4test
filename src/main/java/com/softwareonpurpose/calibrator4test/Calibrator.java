@@ -138,11 +138,10 @@ public abstract class Calibrator {
     }
 
     /**
-     * Add a description of a known issue which accounts for a verification failure (e.g. bug).  This should be removed
-     * once it is noticed that the verification failure NO longer occurs.
+     * Add a description of a known issue which accounts for a verification failure (e.g. bug).
+     * This should be removed once it is noticed that the verification failure NO longer occurs.
      *
-     * @param description Free-form description of a known issue (e.g. "Bug #999 - login fails", "Config issues in
-     *                    'Stage'")
+     * @param description Free-form description of known issue (e.g. "Bug #999 - login fails")
      */
     @SuppressWarnings("WeakerAccess")
     protected void addKnownIssue(@SuppressWarnings("SameParameterValue") String description) {
