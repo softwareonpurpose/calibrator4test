@@ -110,9 +110,9 @@ public abstract class Calibrator {
     }
 
     /**
-     * Indicates whether the Expected object has been provided.
+     * Indicates whether an Expected object has been provided.
      *
-     * @return An instance of the validatee with expected values exists
+     * @return boolean
      */
     protected boolean expectedExists() {
         return expectedExists;
