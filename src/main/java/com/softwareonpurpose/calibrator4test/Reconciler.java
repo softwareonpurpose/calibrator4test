@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Craig A. Stockton
+ * Copyright 2018 Craig A. Stockton
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class Reconciler {
      *
      * @return An instance of Reconciler
      */
-    static Reconciler getInstance(Object expected, Object actual) {
+    static Reconciler construct(Object expected, Object actual) {
         return new Reconciler(expected, actual);
     }
 
