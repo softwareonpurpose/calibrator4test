@@ -25,6 +25,11 @@ public abstract class Calibrator {
 
     @SuppressWarnings("WeakerAccess")
     public static final String PASS = "";
+    private final static String VALIDATION_FORMAT = "VALIDATION %s: %s";
+    private final static String PASSED = "PASSED";
+    private final static String FAILED = "FAILED";
+    private final static String TO_REGRESS = "(known issues to be regressed)";
+    private final static String KNOWN_ISSUES = "KNOWN ISSUES:";
     @SuppressWarnings("WeakerAccess")
     private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
     private final List<Calibrator> children = new ArrayList<>();
@@ -237,13 +242,20 @@ public abstract class Calibrator {
 
     private void compileReport() {
         if (isPassed() && !issuesFound()) return;
-        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", issuesFound() ? "(known issues to be regressed)" : ""));
+        report.append(String.format(VALIDATION_FORMAT, isPassed() ? PASSED : FAILED, issuesFound() ? TO_REGRESS : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
-            report.append("KNOWN ISSUES:");
+            report.append(KNOWN_ISSUES);
             report.append(String.format("%n%s%n", getKnownIssues()));
         }
     }
+
+    private interface ValidationBehavior {
+
+        String execute();
+    }
+
+    /*----  Private Validation Behaviors      -----*/
 
     /***
      * Provide values externally to indicate the type of logging to use
@@ -252,13 +264,6 @@ public abstract class Calibrator {
     public class ValidationLoggingStyle {
         public final static String BDD = "THEN";
         public final static String STANDARD = "VALIDATE";
-    }
-
-    /*----  Private Validation Behaviors      -----*/
-
-    private interface ValidationBehavior {
-
-        String execute();
     }
 
     private class RootBehavior implements ValidationBehavior {
