@@ -47,7 +47,7 @@ class Verifier {
      * @return New instance of Verifier
      */
     static Verifier getInstance(String description, Object expected, Object actual, IndentManager indentManager) {
-        return new Verifier(description, expected, actual, Reconciler.getInstance(expected, actual), indentManager);
+        return new Verifier(description, expected, actual, Reconciler.construct(expected, actual), indentManager);
     }
 
     /**
