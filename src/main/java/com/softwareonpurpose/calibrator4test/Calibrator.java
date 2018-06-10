@@ -68,11 +68,11 @@ public abstract class Calibrator {
     }
 
     /**
-     * Constructor to be used by "Root" calibrators (NO parent)
+     * Constructor to be used for "Root" calibrators (NO parent)
      *
-     * @param description A description of the object validated
-     * @param expected    Object representing an expected state
-     * @param actual      Object representing an actual state
+     * @param description Description of object calibrated
+     * @param expected    Object representing expected state
+     * @param actual      Object representing actual state
      */
     protected Calibrator(String description, Object expected, Object actual) {
         this(description, expected, actual, null);
