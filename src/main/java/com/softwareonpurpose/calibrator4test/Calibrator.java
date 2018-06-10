@@ -62,7 +62,7 @@ public abstract class Calibrator {
             this.indentManager = IndentManager.construct();
         } else {
             calibrationBehavior = new ChildBehavior();
-            this.indentManager = parentCalibrator.getIndentManager();
+            this.indentManager = parentCalibrator.indentManager;
         }
         this.description = description;
     }
@@ -146,7 +146,7 @@ public abstract class Calibrator {
      */
     @SuppressWarnings("WeakerAccess")
     protected void addKnownIssue(@SuppressWarnings("SameParameterValue") String description) {
-        knownIssues.append(getIndentManager().format(String.format("%s -- %s", className, description)));
+        knownIssues.append(indentManager.format(String.format("%s -- %s", className, description)));
     }
 
     /**
@@ -157,22 +157,18 @@ public abstract class Calibrator {
      * @param actual      The actual value
      */
     protected void verify(String description, Object expected, Object actual) {
-        String result = Verifier.construct(description, expected, actual, getIndentManager()).verify();
+        String result = Verifier.construct(description, expected, actual, indentManager).verify();
         String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : PASS;
-        failures.append(getIndentManager().format(formattedResult));
-    }
-
-    private IndentManager getIndentManager() {
-        return indentManager;
+        failures.append(indentManager.format(formattedResult));
     }
 
     private void logCalibration() {
         logger.info("");
-        if (getIndentManager().isAtRootLevel()) {
+        if (indentManager.isAtRootLevel()) {
             logger.info(String.format("%s:", validationLoggingStyle));
             logger.info(description);
         } else {
-            logger.info(getIndentManager().format(description));
+            logger.info(indentManager.format(description));
         }
     }
 
@@ -191,11 +187,11 @@ public abstract class Calibrator {
     }
 
     private void incrementIndentation() {
-        getIndentManager().increment(2);
+        indentManager.increment(2);
     }
 
     private void decrementIndentation() {
-        getIndentManager().decrement();
+        indentManager.decrement();
     }
 
     private String getFailures() {
