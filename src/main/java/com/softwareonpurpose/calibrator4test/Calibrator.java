@@ -282,6 +282,9 @@ public abstract class Calibrator {
         }
     }
 
+    /***
+     * Provide values externally to indicate the type of logging to use
+     */
     @SuppressWarnings("WeakerAccess")
     public class ValidationLoggingStyle {
         public final static String BDD = "THEN";
