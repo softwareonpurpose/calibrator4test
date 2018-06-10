@@ -237,7 +237,7 @@ public abstract class Calibrator {
 
     private void compileReport() {
         if (isPassed() && !issuesFound()) return;
-        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", isPassed() ? "(known issues to be regressed)" : ""));
+        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", issuesFound() ? "(known issues to be regressed)" : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
             report.append("KNOWN ISSUES:");
