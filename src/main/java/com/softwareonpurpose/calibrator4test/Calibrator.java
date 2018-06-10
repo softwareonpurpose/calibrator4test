@@ -42,6 +42,7 @@ public abstract class Calibrator {
     private final String className;
     private final boolean expectedExists;
     private final boolean actualExists;
+    private final Logger logger = LoggerFactory.getLogger("");
 
     /**
      * Constructor to be used by "Child" calibrators (added as a child of at least one other calibrator)
@@ -170,12 +171,12 @@ public abstract class Calibrator {
     }
 
     private void logValidation() {
-        getLogger().info("");
+        logger.info("");
         if (getIndentManager().isAtRootLevel()) {
-            getLogger().info(String.format("%s:", validationLoggingStyle));
-            getLogger().info(getDescription());
+            logger.info(String.format("%s:", validationLoggingStyle));
+            logger.info(getDescription());
         } else {
-            getLogger().info(getIndentManager().format(getDescription()));
+            logger.info(getIndentManager().format(getDescription()));
         }
     }
 
@@ -218,10 +219,6 @@ public abstract class Calibrator {
 
     private boolean isPassed() {
         return !isFailed();
-    }
-
-    private Logger getLogger() {
-        return LoggerFactory.getLogger("");
     }
 
     private void executeCalibration() {
