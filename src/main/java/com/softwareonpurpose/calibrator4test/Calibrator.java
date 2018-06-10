@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Craig A. Stockton
+ * Copyright 2018 Craig A. Stockton
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import java.util.List;
 
 public abstract class Calibrator {
 
+    @SuppressWarnings("WeakerAccess")
     public static final String PASS = "";
     @SuppressWarnings("WeakerAccess")
     private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
@@ -40,9 +41,9 @@ public abstract class Calibrator {
     /**
      * Constructor to be used by "Child" calibrators (added as a child of at least one other calibrator)
      *
-     * @param description     A description of the object validated
-     * @param expected        Object representing an expected state
-     * @param actual          Object representing an actual state
+     * @param description      A description of the object validated
+     * @param expected         Object representing an expected state
+     * @param actual           Object representing an actual state
      * @param parentCalibrator Parent Calibrator
      */
     protected Calibrator(String description, Object expected, Object actual, Calibrator parentCalibrator) {
@@ -235,8 +236,7 @@ public abstract class Calibrator {
 
     private void compileReport() {
         if (isPassed() && !issuesFound()) return;
-        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", isPassed() && issuesFound
-                () ? "(known issues to be regressed)" : ""));
+        report.append(String.format("VALIDATION %s: %s", isPassed() ? "PASSED" : "FAILED", isPassed() ? "(known issues to be regressed)" : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
             report.append("KNOWN ISSUES:");
