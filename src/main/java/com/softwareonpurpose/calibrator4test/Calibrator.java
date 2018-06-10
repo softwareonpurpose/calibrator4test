@@ -45,11 +45,11 @@ public abstract class Calibrator {
     private final Logger logger = LoggerFactory.getLogger("");
 
     /**
-     * Constructor to be used by "Child" calibrators (added as a child of at least one other calibrator)
+     * Constructor to be used by "Child" calibrators (added as a child of a calibrator)
      *
-     * @param description      A description of the object validated
-     * @param expected         Object representing an expected state
-     * @param actual           Object representing an actual state
+     * @param description      Description of the object calibrated
+     * @param expected         Object representing expected state
+     * @param actual           Object representing actual state
      * @param parentCalibrator Parent Calibrator
      */
     protected Calibrator(String description, Object expected, Object actual, Calibrator parentCalibrator) {
