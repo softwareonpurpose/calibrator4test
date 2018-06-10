@@ -25,20 +25,20 @@ public abstract class Calibrator {
 
     @SuppressWarnings("WeakerAccess")
     public static final String PASS = "";
-    private final static String VALIDATION_FORMAT = "VALIDATION %s: %s";
+    private final static String CALIBRATION_FORMAT = "VALIDATION %s: %s";
     private final static String PASSED = "PASSED";
     private final static String FAILED = "FAILED";
     private final static String TO_REGRESS = "(known issues to be regressed)";
     private final static String KNOWN_ISSUES = "KNOWN ISSUES:";
     @SuppressWarnings("WeakerAccess")
-    private static String validationLoggingStyle = ValidationLoggingStyle.STANDARD;
+    private static String validationLoggingStyle = CalibrationLoggingStyle.STANDARD;
     private final List<Calibrator> children = new ArrayList<>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder knownIssues = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
     private final String description;
-    private final ValidationBehavior validationBehavior;
+    private final CalibrationBehavior calibrationBehavior;
     private final String className;
     private final boolean expectedExists;
     private final boolean actualExists;
@@ -57,10 +57,10 @@ public abstract class Calibrator {
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
         if (parentCalibrator == null) {
-            validationBehavior = new RootBehavior();
+            calibrationBehavior = new RootBehavior();
             this.indentManager = IndentManager.construct();
         } else {
-            validationBehavior = new ChildBehavior();
+            calibrationBehavior = new ChildBehavior();
             this.indentManager = parentCalibrator.getIndentManager();
         }
         this.description = description;
@@ -80,16 +80,16 @@ public abstract class Calibrator {
     /**
      * Set the 'Style' to be used in logging the Validation event.
      *
-     * @param style Calibrator.ValidationLoggingStyle
+     * @param style Calibrator.CalibrationLoggingStyle
      */
     @SuppressWarnings("WeakerAccess")
     public static void setStyle(String style) {
         switch (style.toUpperCase()) {
-            case ValidationLoggingStyle.BDD:
-                validationLoggingStyle = ValidationLoggingStyle.BDD;
+            case CalibrationLoggingStyle.BDD:
+                validationLoggingStyle = CalibrationLoggingStyle.BDD;
                 return;
             default:
-                validationLoggingStyle = ValidationLoggingStyle.STANDARD;
+                validationLoggingStyle = CalibrationLoggingStyle.STANDARD;
         }
     }
 
@@ -124,7 +124,7 @@ public abstract class Calibrator {
      */
     @SuppressWarnings("WeakerAccess")
     public String validate() {
-        return validationBehavior.execute();
+        return calibrationBehavior.execute();
     }
 
     /**
@@ -238,7 +238,7 @@ public abstract class Calibrator {
 
     private void compileReport() {
         if (isPassed() && !issuesFound()) return;
-        report.append(String.format(VALIDATION_FORMAT, isPassed() ? PASSED : FAILED, issuesFound() ? TO_REGRESS : ""));
+        report.append(String.format(CALIBRATION_FORMAT, isPassed() ? PASSED : FAILED, issuesFound() ? TO_REGRESS : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
             report.append(KNOWN_ISSUES);
@@ -246,23 +246,23 @@ public abstract class Calibrator {
         }
     }
 
-    private interface ValidationBehavior {
+    private interface CalibrationBehavior {
 
         String execute();
     }
 
-    /*----  Private Validation Behaviors      -----*/
+    /*----  Private Calibration Behaviors      -----*/
 
     /***
      * Provide values externally to indicate the type of logging to use
      */
     @SuppressWarnings("WeakerAccess")
-    public class ValidationLoggingStyle {
+    public class CalibrationLoggingStyle {
         public final static String BDD = "THEN";
         public final static String STANDARD = "VALIDATE";
     }
 
-    private class RootBehavior implements ValidationBehavior {
+    private class RootBehavior implements CalibrationBehavior {
 
         @Override
         public String execute() {
@@ -275,7 +275,7 @@ public abstract class Calibrator {
         }
     }
 
-    private class ChildBehavior implements ValidationBehavior {
+    private class ChildBehavior implements CalibrationBehavior {
 
         @Override
         public String execute() {

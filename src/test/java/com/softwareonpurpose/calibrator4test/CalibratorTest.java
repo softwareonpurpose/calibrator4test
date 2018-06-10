@@ -102,7 +102,7 @@ public class CalibratorTest {
 
     @Test
     public void courseValidator() {
-        Calibrator.setStyle(Calibrator.ValidationLoggingStyle.BDD);
+        Calibrator.setStyle(Calibrator.CalibrationLoggingStyle.BDD);
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
         //noinspection ConstantConditions
