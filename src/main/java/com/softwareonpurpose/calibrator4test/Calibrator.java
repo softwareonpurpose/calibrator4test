@@ -79,7 +79,7 @@ public abstract class Calibrator {
     }
 
     /**
-     * Set the 'Style' to be used in logging the Validation event.
+     * Set the 'Style' to be used in logging the Calibration event.
      *
      * @param style Calibrator.CalibrationLoggingStyle
      */
@@ -95,8 +95,9 @@ public abstract class Calibrator {
     }
 
     /**
-     * Execute a list of verifications of the Actual object using the Expected object.  Implemented in the inheritor of
-     * Calibrator.  Intended to contain ONLY calls to the verify() methods.
+     * Execute a list of verifications of the Actual object using the Expected object.
+     * Implemented in the inheritor of Calibrator.
+     * Intended to contain ONLY calls to the verify() method.
      */
     protected abstract void executeVerifications();
 
