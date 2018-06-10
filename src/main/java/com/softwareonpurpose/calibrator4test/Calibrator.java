@@ -150,11 +150,11 @@ public abstract class Calibrator {
     }
 
     /**
-     * Verifies an actual Boolean value, adding to 'Failure' message if verification fails
+     * Verifies an actual object with an expected object, adding to 'Failure' message if verification fails
      *
      * @param description Description of Object verified
-     * @param expected    The expected value
-     * @param actual      The actual value
+     * @param expected    Expected object
+     * @param actual      Actual object
      */
     protected void verify(String description, Object expected, Object actual) {
         String result = Verifier.construct(description, expected, actual, indentManager).verify();
