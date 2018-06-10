@@ -205,7 +205,7 @@ public abstract class Calibrator {
         return failures.toString();
     }
 
-    private void executeChildValidations() {
+    private void executeChildCalibrations() {
         for (Calibrator calibrator : children) {
             failures.append(calibrator.validate());
         }
@@ -224,16 +224,20 @@ public abstract class Calibrator {
         return LoggerFactory.getLogger("");
     }
 
-    private void executeValidation() {
+    private void executeCalibration() {
         if (expectedExists() && actualExists()) {
             executeVerifications();
-            executeChildValidations();
+            executeChildCalibrations();
         } else {
-            String expected = ((Boolean) expectedExists()).toString();
-            String actual = ((Boolean) actualExists()).toString();
-            final String resultMessage = "%s exists";
-            verify(String.format(resultMessage, getDescription()), expected, actual);
+            reportMissingComparator();
         }
+    }
+
+    private void reportMissingComparator() {
+        String expected = ((Boolean) expectedExists()).toString();
+        String actual = ((Boolean) actualExists()).toString();
+        final String resultMessage = "%s exists";
+        verify(String.format(resultMessage, getDescription()), expected, actual);
     }
 
     private void compileReport() {
@@ -268,7 +272,7 @@ public abstract class Calibrator {
         public String execute() {
             logValidation();
             incrementIndentation();
-            executeValidation();
+            executeCalibration();
             compileReport();
             decrementIndentation();
             return report.toString();
@@ -282,7 +286,7 @@ public abstract class Calibrator {
             decrementIndentation();
             logValidation();
             incrementIndentation();
-            executeValidation();
+            executeCalibration();
             decrementIndentation();
             return getFailures();
         }
