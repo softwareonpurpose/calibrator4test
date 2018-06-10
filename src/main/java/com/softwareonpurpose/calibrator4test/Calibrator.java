@@ -170,7 +170,7 @@ public abstract class Calibrator {
         return description;
     }
 
-    private void logValidation() {
+    private void logCalibration() {
         logger.info("");
         if (getIndentManager().isAtRootLevel()) {
             logger.info(String.format("%s:", validationLoggingStyle));
@@ -263,7 +263,7 @@ public abstract class Calibrator {
 
         @Override
         public String execute() {
-            logValidation();
+            logCalibration();
             incrementIndentation();
             executeCalibration();
             compileReport();
@@ -277,7 +277,7 @@ public abstract class Calibrator {
         @Override
         public String execute() {
             decrementIndentation();
-            logValidation();
+            logCalibration();
             incrementIndentation();
             executeCalibration();
             decrementIndentation();
