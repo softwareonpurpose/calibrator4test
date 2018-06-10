@@ -166,17 +166,13 @@ public abstract class Calibrator {
         return indentManager;
     }
 
-    private String getDescription() {
-        return description;
-    }
-
     private void logCalibration() {
         logger.info("");
         if (getIndentManager().isAtRootLevel()) {
             logger.info(String.format("%s:", validationLoggingStyle));
-            logger.info(getDescription());
+            logger.info(description);
         } else {
-            logger.info(getIndentManager().format(getDescription()));
+            logger.info(getIndentManager().format(description));
         }
     }
 
@@ -230,7 +226,7 @@ public abstract class Calibrator {
         String expected = ((Boolean) expectedExists()).toString();
         String actual = ((Boolean) actualExists()).toString();
         final String resultMessage = "%s exists";
-        verify(String.format(resultMessage, getDescription()), expected, actual);
+        verify(String.format(resultMessage, description), expected, actual);
     }
 
     private void compileReport() {
