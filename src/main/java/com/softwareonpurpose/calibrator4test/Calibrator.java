@@ -101,9 +101,9 @@ public abstract class Calibrator {
     protected abstract void executeVerifications();
 
     /**
-     * Indicates whether the Actual object has been provided.
+     * Indicates whether an Actual object has been provided.
      *
-     * @return The 'actual' validatee exists
+     * @return boolean
      */
     protected boolean actualExists() {
         return actualExists;
