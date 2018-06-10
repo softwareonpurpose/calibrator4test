@@ -213,12 +213,8 @@ public abstract class Calibrator {
         compileChildIssues();
     }
 
-    private boolean isFailed() {
-        return failures.length() > 0;
-    }
-
     private boolean isPassed() {
-        return !isFailed();
+        return failures.length() == 0;
     }
 
     private void executeCalibration() {
