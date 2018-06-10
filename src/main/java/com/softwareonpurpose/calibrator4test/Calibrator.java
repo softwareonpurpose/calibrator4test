@@ -150,7 +150,7 @@ public abstract class Calibrator {
      * @param actual      The actual value
      */
     protected void verify(String description, Object expected, Object actual) {
-        String result = Verifier.getInstance(description, expected, actual, getIndentManager()).verify();
+        String result = Verifier.construct(description, expected, actual, getIndentManager()).verify();
         recordIfFailed(result);
     }
 

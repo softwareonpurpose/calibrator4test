@@ -46,7 +46,7 @@ class Verifier {
      * @param indentManager IndentManager to use to format results
      * @return New instance of Verifier
      */
-    static Verifier getInstance(String description, Object expected, Object actual, IndentManager indentManager) {
+    static Verifier construct(String description, Object expected, Object actual, IndentManager indentManager) {
         return new Verifier(description, expected, actual, Reconciler.construct(expected, actual), indentManager);
     }
 
