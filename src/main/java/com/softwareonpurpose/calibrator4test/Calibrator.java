@@ -31,8 +31,6 @@ public abstract class Calibrator {
     private final static String FAILED = "FAILED";
     private final static String TO_REGRESS = "(known issues to be regressed)";
     private final static String KNOWN_ISSUES = "KNOWN ISSUES:";
-    @SuppressWarnings("WeakerAccess")
-    private static String validationLoggingStyle = CalibrationLoggingStyle.STANDARD;
     private final List<Calibrator> children = new ArrayList<>();
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
@@ -77,22 +75,6 @@ public abstract class Calibrator {
      */
     protected Calibrator(String description, Object expected, Object actual) {
         this(description, expected, actual, null);
-    }
-
-    /**
-     * Set the 'Style' to be used in logging the Calibration event.
-     *
-     * @param style Calibrator.CalibrationLoggingStyle
-     */
-    @SuppressWarnings("WeakerAccess")
-    public static void setStyle(String style) {
-        switch (style.toUpperCase()) {
-            case CalibrationLoggingStyle.BDD:
-                validationLoggingStyle = CalibrationLoggingStyle.BDD;
-                return;
-            default:
-                validationLoggingStyle = CalibrationLoggingStyle.STANDARD;
-        }
     }
 
     /**
@@ -166,7 +148,7 @@ public abstract class Calibrator {
     private void logCalibration() {
         logger.info("");
         if (indentManager.isAtRootLevel()) {
-            logger.info(String.format("%s:", validationLoggingStyle));
+            logger.info("VALIDATE:");
             logger.info(description);
         } else {
             logger.info(indentManager.format(description));
@@ -236,16 +218,11 @@ public abstract class Calibrator {
         }
     }
 
-    /***
-     * Provide values externally to indicate the type of logging to use
-     */
-    @SuppressWarnings("WeakerAccess")
-    public class CalibrationLoggingStyle {
-        public final static String BDD = "THEN";
-        public final static String STANDARD = "VALIDATE";
+    private void performCalibration() {
+        logCalibration();
+        incrementIndentation();
+        executeCalibration();
     }
-
-    /*----  Private Calibration Behaviors      -----*/
 
     private interface CalibrationBehavior {
 
@@ -256,9 +233,7 @@ public abstract class Calibrator {
 
         @Override
         public String execute() {
-            logCalibration();
-            incrementIndentation();
-            executeCalibration();
+            performCalibration();
             compileReport();
             decrementIndentation();
             return report.toString();
@@ -270,9 +245,7 @@ public abstract class Calibrator {
         @Override
         public String execute() {
             decrementIndentation();
-            logCalibration();
-            incrementIndentation();
-            executeCalibration();
+            performCalibration();
             decrementIndentation();
             return getFailures();
         }

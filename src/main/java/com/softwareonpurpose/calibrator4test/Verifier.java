@@ -26,6 +26,8 @@ class Verifier {
     private final IndentManager indentManager;
     private final String verificationDescription;
     private final String message;
+    private final Object expected;
+    private final Object actual;
     private Reconciler reconciler;
 
     private Verifier(String description, Object expected, Object actual, IndentManager formatter) {
@@ -33,7 +35,8 @@ class Verifier {
         String expectedDescription = expected == null ? "<null>" : expected.toString();
         this.verificationDescription = String.format("%s - %s", description, expectedDescription);
         this.message = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
-        this.reconciler = Reconciler.construct(expected, actual);
+        this.expected = expected;
+        this.actual = actual;
     }
 
     /**
@@ -56,7 +59,7 @@ class Verifier {
      */
     String verify() {
         LoggerFactory.getLogger("").info(indentManager.format(verificationDescription));
-        if (RECONCILED.equals(reconciler.reconcile())) return PASS;
+        if (RECONCILED.equals(Reconciler.reconcile(expected, actual))) return PASS;
         return message;
     }
 }

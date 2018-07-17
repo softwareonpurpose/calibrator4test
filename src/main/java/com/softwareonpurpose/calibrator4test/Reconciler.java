@@ -15,6 +15,9 @@
  */
 package com.softwareonpurpose.calibrator4test;
 
+/**
+ * Reconciles an actual object with an expected object, without throwing an Assertion or Exception.
+ */
 @SuppressWarnings("SpellCheckingInspection")
 class Reconciler {
 
@@ -22,28 +25,21 @@ class Reconciler {
     private final static int EXPECTED_NULL = 1;
     private final static int ACTUAL_NULL = 2;
     private final static int DISCREPANCY = 3;
-    private final Object actual;
-    private final Object expected;
 
-    private Reconciler(Object expected, Object actual) {
-        this.expected = expected;
-        this.actual = actual;
+    private Reconciler() {
     }
 
     /**
-     * Get an instance of a Reconciler
+     * Compare the actual and expected objects
      *
-     * @return An instance of Reconciler
+     * @return Integer value indicating the result:
+     * <p>
+     * 0 - Reconciled
+     * 1 - Expected is null
+     * 2 - Actual is null
+     * 3 - Discrepancy exists)
      */
-    static Reconciler construct(Object expected, Object actual) {
-        return new Reconciler(expected, actual);
-    }
-
-    /**
-     * @return Integer value indicating the reconciliation result (0 - Reconciled; 1 - Expected is null; 2 - Actual is
-     * null; 3 - Discrepancy exists)
-     */
-    Integer reconcile() {
+    static Integer reconcile(Object expected, Object actual) {
         if (expected == null && actual == null)
             return RECONCILED;
         if (expected == null)

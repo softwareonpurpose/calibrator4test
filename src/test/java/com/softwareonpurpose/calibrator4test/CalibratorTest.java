@@ -1,5 +1,8 @@
 package com.softwareonpurpose.calibrator4test;
 
+import com.softwareonpurpose.calibrator4test.mock.AnObject;
+import com.softwareonpurpose.calibrator4test.mock.AnObjectCalibrator;
+import com.softwareonpurpose.calibrator4test.mock.CourseCalibrator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -99,7 +102,6 @@ public class CalibratorTest {
 
     @Test
     public void courseValidator() {
-        Calibrator.setStyle(Calibrator.CalibrationLoggingStyle.BDD);
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
         //noinspection ConstantConditions
