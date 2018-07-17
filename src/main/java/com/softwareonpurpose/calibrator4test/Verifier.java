@@ -18,6 +18,9 @@ package com.softwareonpurpose.calibrator4test;
 import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Provides clear logging of verification, and reconciliation rresults formatted for Calibration report
+ */
 class Verifier {
 
     final static String PASS = "";
@@ -28,7 +31,6 @@ class Verifier {
     private final String message;
     private final Object expected;
     private final Object actual;
-    private Reconciler reconciler;
 
     private Verifier(String description, Object expected, Object actual, IndentManager formatter) {
         this.indentManager = formatter;
@@ -45,17 +47,20 @@ class Verifier {
      * @param description   Description of the Object being verified
      * @param expected      Expected Object value
      * @param actual        Actual Object value
-     * @param indentManager IndentManager to use to format results
-     * @return New instance of Verifier
+     * @param indentManager IndentManager used to format results
+     * @return Verifier
      */
     static Verifier construct(String description, Object expected, Object actual, IndentManager indentManager) {
         return new Verifier(description, expected, actual, indentManager);
     }
 
     /**
-     * Verifies that the Expected and Actual values reconcile
+     * Return results of reconciliation formatted for Calibration report
      *
-     * @return Empty String ("") if the values reconcile; a message containing the two values if there is a discrepancy
+     * @return String Formatted result
+     *
+     *      Empty String (""):  Reconciliation successful
+     *      Populated String:   Details of reconciliation failure
      */
     String verify() {
         LoggerFactory.getLogger("").info(indentManager.format(verificationDescription));
