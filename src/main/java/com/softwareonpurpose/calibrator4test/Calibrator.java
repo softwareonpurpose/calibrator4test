@@ -35,7 +35,7 @@ public abstract class Calibrator {
     private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder knownIssues = new StringBuilder();
-    private final StringBuilder report = new StringBuilder();
+    protected final StringBuilder report = new StringBuilder();
     private final String description;
     private final CalibrationBehavior calibrationBehavior;
     private final String className;
@@ -145,7 +145,7 @@ public abstract class Calibrator {
         failures.append(indentManager.format(formattedResult));
     }
 
-    private void logCalibration() {
+    protected void logCalibration() {
         logger.info("");
         if (indentManager.isAtRootLevel()) {
             logger.info("VALIDATE:");
@@ -169,11 +169,11 @@ public abstract class Calibrator {
         return knownIssues.length() > 0;
     }
 
-    private void incrementIndentation() {
+    protected void incrementIndentation() {
         indentManager.increment(2);
     }
 
-    private void decrementIndentation() {
+    protected void decrementIndentation() {
         indentManager.decrement();
     }
 
@@ -192,7 +192,7 @@ public abstract class Calibrator {
         return failures.length() == 0;
     }
 
-    private void executeCalibration() {
+    protected void executeCalibration() {
         if (expectedExists() && actualExists()) {
             executeVerifications();
             executeChildCalibrations();
@@ -208,7 +208,7 @@ public abstract class Calibrator {
         verify(String.format(resultMessage, description), expected, actual);
     }
 
-    private void compileReport() {
+    protected void compileReport() {
         if (isPassed() && !issuesFound()) return;
         report.append(String.format(CALIBRATION_FORMAT, isPassed() ? PASSED : FAILED, issuesFound() ? TO_REGRESS : ""));
         report.append(String.format("%n%s%n", getFailures()));
@@ -218,7 +218,7 @@ public abstract class Calibrator {
         }
     }
 
-    private void performCalibration() {
+    protected void performCalibration() {
         logCalibration();
         incrementIndentation();
         executeCalibration();

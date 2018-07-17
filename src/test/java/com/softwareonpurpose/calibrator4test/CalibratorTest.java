@@ -1,5 +1,6 @@
 package com.softwareonpurpose.calibrator4test;
 
+import com.softwareonpurpose.calibrator4test.mock.ARootObjectCalibrator;
 import com.softwareonpurpose.calibrator4test.mock.AnObject;
 import com.softwareonpurpose.calibrator4test.mock.AnObjectCalibrator;
 import com.softwareonpurpose.calibrator4test.mock.CourseCalibrator;
@@ -13,7 +14,7 @@ public class CalibratorTest {
     public void rootOnlyValidator_pass() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
+        Calibrator validator = ARootObjectCalibrator.getInstance(expected, actual);
         confirmPass(validator.validate());
     }
 
@@ -21,7 +22,7 @@ public class CalibratorTest {
     public void rootOnlyValidator_fail() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(false, 0, "Not String");
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
+        Calibrator validator = ARootObjectCalibrator.getInstance(expected, actual);
         confirmFail(validator.validate());
     }
 
