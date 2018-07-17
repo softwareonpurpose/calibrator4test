@@ -15,6 +15,7 @@
  */
 package com.softwareonpurpose.calibrator4test;
 
+import com.softwareonpurpose.indentmanager.IndentManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,7 @@ public abstract class Calibrator {
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
         if (parentCalibrator == null) {
             calibrationBehavior = new RootBehavior();
-            this.indentManager = IndentManager.construct();
+            this.indentManager = IndentManager.getInstance();
         } else {
             calibrationBehavior = new ChildBehavior();
             this.indentManager = parentCalibrator.indentManager;
@@ -95,6 +96,16 @@ public abstract class Calibrator {
     }
 
     /**
+     * Validate the Actual object using the Expected object
+     *
+     * @return For child calibrators, a list of verification failures; for root calibrators, a validation report
+     */
+    @SuppressWarnings("WeakerAccess")
+    public String validate() {
+        return calibrationBehavior.execute();
+    }
+
+    /**
      * Execute a list of verifications of the Actual object using the Expected object.
      * Implemented in the inheritor of Calibrator.
      * Intended to contain ONLY calls to the verify() method.
@@ -117,16 +128,6 @@ public abstract class Calibrator {
      */
     protected boolean expectedExists() {
         return expectedExists;
-    }
-
-    /**
-     * Validate the Actual object using the Expected object
-     *
-     * @return For child calibrators, a list of verification failures; for root calibrators, a validation report
-     */
-    @SuppressWarnings("WeakerAccess")
-    public String validate() {
-        return calibrationBehavior.execute();
     }
 
     /**
@@ -235,13 +236,6 @@ public abstract class Calibrator {
         }
     }
 
-    private interface CalibrationBehavior {
-
-        String execute();
-    }
-
-    /*----  Private Calibration Behaviors      -----*/
-
     /***
      * Provide values externally to indicate the type of logging to use
      */
@@ -249,6 +243,13 @@ public abstract class Calibrator {
     public class CalibrationLoggingStyle {
         public final static String BDD = "THEN";
         public final static String STANDARD = "VALIDATE";
+    }
+
+    /*----  Private Calibration Behaviors      -----*/
+
+    private interface CalibrationBehavior {
+
+        String execute();
     }
 
     private class RootBehavior implements CalibrationBehavior {

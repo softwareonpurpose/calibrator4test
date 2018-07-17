@@ -1,8 +1,5 @@
 package com.softwareonpurpose.calibrator4test;
 
-import com.softwareonpurpose.calibrator4test.mock.AnObject;
-import com.softwareonpurpose.calibrator4test.mock.AnObjectCalibrator;
-import com.softwareonpurpose.calibrator4test.mock.CourseCalibrator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
