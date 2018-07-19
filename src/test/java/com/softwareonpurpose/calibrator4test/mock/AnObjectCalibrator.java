@@ -12,15 +12,6 @@ public class AnObjectCalibrator extends Calibrator {
         super(description, expected, actual);
         this.expected = expected;
         this.actual = actual;
-        if (expectedExists() && actualExists()) {
-            addChildCalibrator(new AnObjectCalibrator(expected.getObject(), actual.getObject(), this));
-        }
-    }
-
-    private AnObjectCalibrator(AnObject expected, AnObject actual, Calibrator parentCalibrator) {
-        super(description, expected, actual, parentCalibrator);
-        this.expected = expected;
-        this.actual = actual;
     }
 
     public static AnObjectCalibrator getInstance(AnObject expected, AnObject actual) {

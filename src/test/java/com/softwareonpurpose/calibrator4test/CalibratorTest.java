@@ -1,6 +1,7 @@
 package com.softwareonpurpose.calibrator4test;
 
-import com.softwareonpurpose.calibrator4test.mock.*;
+import com.softwareonpurpose.calibrator4test.mock.AnObject;
+import com.softwareonpurpose.calibrator4test.mock.AnObjectCalibrator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -8,109 +9,128 @@ import org.testng.annotations.Test;
 public class CalibratorTest {
 
     @Test
-    public void rootOnlyCalibrator_pass() {
+    public void nodeCalibrator_pass() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
-        Calibrator validator = RootObjectCalibrator.getInstance(expected, actual);
-        confirmPass(validator.validate());
+        Calibrator calibrator = AnObjectCalibrator.getInstance(expected, actual);
+        Assert.assertEquals(calibrator.calibrate(), Calibrator.SUCCESS);
     }
 
     @Test
-    public void rootOnlyCalibrator_fail() {
+    public void nodeCalibrator_fail() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(false, 0, "Not String");
-        Calibrator validator = RootObjectCalibrator.getInstance(expected, actual);
-        confirmFail(validator.validate());
+        Calibrator calibrator = AnObjectCalibrator.getInstance(expected, actual);
+        Assert.assertEquals(calibrator.calibrate(), "CALIBRATION FAILED: \r\n" +
+                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
+                "    AnObjectCalibrator: Integer -- Expected: 9  Actual: 0\r\n" +
+                "    AnObjectCalibrator: String -- Expected: String  Actual: Not String\r\n\r\n");
     }
 
     @Test
-    public void rootOnlyCalibrator_knownIssue() {
+    public void nodeCalibrator_knownIssue() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(true, 9, "String");
-        Calibrator validator = RootObjectCalibrator.getInstance(expected, actual);
-        validator.addKnownIssue("Known Bug Issue");
-        confirmFail(validator.validate());
+        Calibrator calibrator = AnObjectCalibrator.getInstance(expected, actual);
+        calibrator.addKnownIssue("Known Bug Issue");
+        Assert.assertEquals(calibrator.calibrate(), "CALIBRATION PASSED: (known issues to be regressed)\r\n" +
+                "\r\n" +
+                "KNOWN ISSUES:\r\n" +
+                "AnObjectCalibrator -- Known Bug Issue\r\n");
     }
 
     @Test
     public void parentChildCalibrators_pass() {
-        AnObject expected = AnObject.getInstance(true, 9, "String");
-        AnObject actual = AnObject.getInstance(true, 9, "String");
-        RootCalibrator parentCalibrator = RootObjectCalibrator.getInstance(expected, actual);
-        ChildCalibrator childCalibrator = ChildObjectCalibrator.getInstance(expected, actual, parentCalibrator);
-        confirmPass(childCalibrator.validate());
+        AnObject expectedParent = AnObject.getInstance(true, 9, "parent");
+        AnObject actualParent = AnObject.getInstance(true, 9, "parent");
+        AnObject expectedChild = AnObject.getInstance(true, 9, "child");
+        AnObject actualChild = AnObject.getInstance(true, 9, "child");
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedParent, actualParent);
+        calibrator.addChildCalibrator(AnObjectCalibrator.getInstance(expectedChild, actualChild));
+        Assert.assertEquals(calibrator.calibrate(), Calibrator.SUCCESS);
     }
 
     @Test
     public void parentChildCalibrators_rootFail() {
-        AnObject child = AnObject.getInstance(true, 5, "Child String");
-        AnObject expected = AnObject.getInstance(true, 9, "String", child);
-        AnObject actual = AnObject.getInstance(false, 9, "String", child);
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
-        confirmFail(validator.validate());
+        AnObject object_1 = AnObject.getInstance(true, 5, "Child String");
+        AnObject object_2 = AnObject.getInstance(false, 9, "String");
+        Calibrator parent = AnObjectCalibrator.getInstance(object_1, object_2);
+        parent.addChildCalibrator(AnObjectCalibrator.getInstance(object_1, object_1));
+        String expected = "CALIBRATION FAILED: \r\n" +
+                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
+                "    AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
+                "    AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
+                "\r\n";
+        String actual = parent.calibrate();
+        Assert.assertEquals(actual, expected);
     }
 
     @Test
     public void parentChildCalibrators_childFail() {
-        AnObject expectedChild = AnObject.getInstance(true, 5, "Child String");
-        AnObject actualChild = AnObject.getInstance(false, 0, "No String");
-        AnObject expected = AnObject.getInstance(true, 9, "String", expectedChild);
-        AnObject actual = AnObject.getInstance(true, 9, "String", actualChild);
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
-        confirmFail(validator.validate());
+        AnObject object_1 = AnObject.getInstance(true, 5, "Child String");
+        AnObject object_2 = AnObject.getInstance(false, 9, "String");
+        Calibrator parent = AnObjectCalibrator.getInstance(object_1, object_1);
+        parent.addChildCalibrator(AnObjectCalibrator.getInstance(object_1, object_2));
+        String expected = "CALIBRATION FAILED: \r\n" +
+                "      AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
+                "      AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
+                "      AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
+                "\r\n";
+        String actual = parent.calibrate();
+        Assert.assertEquals(actual, expected);
     }
 
     @Test
     public void parentChildCalibrators_bothFail() {
-        AnObject expectedChild = AnObject.getInstance(true, 5, "Child String");
-        AnObject actualChild = AnObject.getInstance(false, 0, "No String");
-        AnObject expected = AnObject.getInstance(true, 9, "String", expectedChild);
-        AnObject actual = AnObject.getInstance(false, 2, "No String", actualChild);
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
-        confirmFail(validator.validate());
+        AnObject object_1 = AnObject.getInstance(true, 5, "Child String");
+        AnObject object_2 = AnObject.getInstance(false, 9, "String");
+        Calibrator parent = AnObjectCalibrator.getInstance(object_1, object_2);
+        parent.addChildCalibrator(AnObjectCalibrator.getInstance(object_1, object_2));
+        String expected = "CALIBRATION FAILED: \r\n" +
+                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
+                "    AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
+                "    AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
+                "      AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
+                "      AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
+                "      AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
+                "\r\n";
+        String actual = parent.calibrate();
+        Assert.assertEquals(actual, expected);
     }
 
     @Test
     public void expectedNull() {
-        AnObject expected = null;
-        AnObject actual = AnObject.getInstance(true, 9, "String");
+        AnObject nullObject = null;
+        AnObject anObject = AnObject.getInstance(true, 9, "String");
         //noinspection ConstantConditions
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
-        confirmFail(validator.validate());
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(nullObject, anObject);
+        String actual = calibrator.calibrate();
+        String expected = "CALIBRATION FAILED: \r\n" +
+                "    AnObjectCalibrator: Object exists -- Expected: false  Actual: true\r\n" +
+                "\r\n";
+        Assert.assertEquals(actual, expected);
     }
 
     @Test
     public void actualNull() {
-        AnObject expected = AnObject.getInstance(true, 9, "String");
-        AnObject actual = null;
+        AnObject anObject = AnObject.getInstance(true, 9, "String");
+        AnObject nullObject = null;
         //noinspection ConstantConditions
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
-        confirmFail(validator.validate());
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(anObject, nullObject);
+        String actual = calibrator.calibrate();
+        String expected = "CALIBRATION FAILED: \r\n" +
+                "    AnObjectCalibrator: Object exists -- Expected: true  Actual: false\r\n" +
+                "\r\n";
+        Assert.assertEquals(actual, expected);
     }
 
     @Test
     public void bothNull() {
-        AnObject expected = null;
-        AnObject actual = null;
+        AnObject nullObject = null;
         //noinspection ConstantConditions
-        AnObjectCalibrator validator = AnObjectCalibrator.getInstance(expected, actual);
-        confirmPass(validator.validate());
-    }
-
-    @Test
-    public void courseCalibrator() {
-        AnObject expected = AnObject.getInstance(true, 9, "String");
-        AnObject actual = AnObject.getInstance(true, 9, "String");
-        //noinspection ConstantConditions
-        CourseCalibrator validator = CourseCalibrator.getInstance(expected, actual);
-        confirmPass(validator.validate());
-    }
-
-    private void confirmPass(String result) {
-        Assert.assertTrue(result.equals(Calibrator.PASS), result);
-    }
-
-    private void confirmFail(String result) {
-        Assert.assertFalse(result.equals(Calibrator.PASS), result);
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(nullObject, nullObject);
+        String actual = calibrator.calibrate();
+        String expected = Calibrator.SUCCESS;
+        Assert.assertEquals(actual, expected);
     }
 }

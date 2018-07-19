@@ -25,92 +25,69 @@ import java.util.List;
 public abstract class Calibrator {
 
     @SuppressWarnings("WeakerAccess")
-    public static final String PASS = "";
-    private final static String CALIBRATION_FORMAT = "VALIDATION %s: %s";
+    public static final String SUCCESS = "";
+    private final static String CALIBRATION_FORMAT = "CALIBRATION %s: %s";
     private final static String PASSED = "PASSED";
     private final static String FAILED = "FAILED";
     private final static String TO_REGRESS = "(known issues to be regressed)";
     private final static String KNOWN_ISSUES = "KNOWN ISSUES:";
     private final List<Calibrator> children = new ArrayList<>();
-    private final IndentManager indentManager;
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder knownIssues = new StringBuilder();
-    protected final StringBuilder report = new StringBuilder();
+    private final StringBuilder report = new StringBuilder();
     private final String description;
-    private final CalibrationBehavior calibrationBehavior;
     private final String className;
     private final boolean expectedExists;
     private final boolean actualExists;
     private final Logger logger = LoggerFactory.getLogger("");
+    private IndentManager indentManager = IndentManager.getInstance();
 
     /**
-     * Constructor to be used by "Child" calibrators (added as a child of a calibrator)
+     * Calibrate an object against an expected object.
+     * Calibration consists of verifying significant properties against expected values.
+     * Child calibrators can be added representing more complex properties (e.g. common regions of a web page)
      *
-     * @param description      Description of the object calibrated
-     * @param expected         Object representing expected state
-     * @param actual           Object representing actual state
-     * @param parentCalibrator Parent Calibrator
+     * @param description Description of object calibrated
+     * @param expected    Expected object
+     * @param actual      Actual object
      */
-    protected Calibrator(String description, Object expected, Object actual, Calibrator parentCalibrator) {
+    protected Calibrator(String description, Object expected, Object actual) {
         this.expectedExists = expected != null;
         this.actualExists = actual != null;
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
-        if (parentCalibrator == null) {
-            calibrationBehavior = new RootBehavior();
-            this.indentManager = IndentManager.getInstance();
-        } else {
-            calibrationBehavior = new ChildBehavior();
-            this.indentManager = parentCalibrator.indentManager;
-        }
         this.description = description;
     }
 
     /**
-     * Constructor to be used for "Root" calibrators (NO parent)
+     * Calibrate the Actual object against the Expected object
      *
-     * @param description Description of object calibrated
-     * @param expected    Object representing expected state
-     * @param actual      Object representing actual state
-     */
-    protected Calibrator(String description, Object expected, Object actual) {
-        this(description, expected, actual, null);
-    }
-
-    /**
-     * Validate the Actual object using the Expected object
-     *
-     * @return For child calibrators, a list of verification failures; for root calibrators, a validation report
+     * @return A complete report from a root calibrator OR failures from a child calibrator
      */
     @SuppressWarnings("WeakerAccess")
-    public String validate() {
-        return calibrationBehavior.execute();
+    public String calibrate() {
+        if (indentManager.isAtRootLevel()) {
+            logCalibration();
+            indentManager.increment(2);
+            executeCalibration();
+            compileReport();
+            indentManager.decrement();
+            return report.toString();
+        } else {
+            indentManager.decrement();
+            logCalibration();
+            indentManager.increment(2);
+            executeCalibration();
+            indentManager.decrement();
+            return getFailures();
+        }
     }
 
     /**
-     * Execute a list of verifications of the Actual object using the Expected object.
-     * Implemented in the inheritor of Calibrator.
+     * Implemented in each concrete Calibrator.
      * Intended to contain ONLY calls to the verify() method.
      */
     protected abstract void executeVerifications();
-
-    /**
-     * Indicates whether an Actual object has been provided.
-     *
-     * @return boolean
-     */
-    protected boolean actualExists() {
-        return actualExists;
-    }
-
-    /**
-     * Indicates whether an Expected object has been provided.
-     *
-     * @return boolean
-     */
-    protected boolean expectedExists() {
-        return expectedExists;
-    }
 
     /**
      * Add a child calibrator
@@ -118,7 +95,7 @@ public abstract class Calibrator {
      * @param calibrator An instance of a 'child' calibrator
      */
     protected void addChildCalibrator(Calibrator calibrator) {
-        children.add(calibrator);
+        children.add(calibrator.withIndentManager(this.indentManager));
     }
 
     /**
@@ -140,12 +117,17 @@ public abstract class Calibrator {
      * @param actual      Actual object
      */
     protected void verify(String description, Object expected, Object actual) {
-        String result = Verifier.construct(description, expected, actual, indentManager).verify();
-        String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : PASS;
+        String result = Verifier.getInstance(description, expected, actual, indentManager).verify();
+        String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : SUCCESS;
         failures.append(indentManager.format(formattedResult));
     }
 
-    protected void logCalibration() {
+    private Calibrator withIndentManager(IndentManager indentManager) {
+        this.indentManager = indentManager;
+        return this;
+    }
+
+    private void logCalibration() {
         logger.info("");
         if (indentManager.isAtRootLevel()) {
             logger.info("VALIDATE:");
@@ -169,21 +151,13 @@ public abstract class Calibrator {
         return knownIssues.length() > 0;
     }
 
-    protected void incrementIndentation() {
-        indentManager.increment(2);
-    }
-
-    protected void decrementIndentation() {
-        indentManager.decrement();
-    }
-
     private String getFailures() {
         return failures.toString();
     }
 
     private void executeChildCalibrations() {
         for (Calibrator calibrator : children) {
-            failures.append(calibrator.validate());
+            failures.append(calibrator.calibrate());
         }
         compileChildIssues();
     }
@@ -192,8 +166,8 @@ public abstract class Calibrator {
         return failures.length() == 0;
     }
 
-    protected void executeCalibration() {
-        if (expectedExists() && actualExists()) {
+    private void executeCalibration() {
+        if (expectedExists && actualExists) {
             executeVerifications();
             executeChildCalibrations();
         } else {
@@ -202,52 +176,21 @@ public abstract class Calibrator {
     }
 
     private void reportMissingComparator() {
-        String expected = ((Boolean) expectedExists()).toString();
-        String actual = ((Boolean) actualExists()).toString();
+        String expected = ((Boolean) expectedExists).toString();
+        String actual = ((Boolean) actualExists).toString();
         final String resultMessage = "%s exists";
         verify(String.format(resultMessage, description), expected, actual);
     }
 
-    protected void compileReport() {
-        if (isPassed() && !issuesFound()) return;
+    private void compileReport() {
+        if (isPassed() && !issuesFound()) {
+            return;
+        }
         report.append(String.format(CALIBRATION_FORMAT, isPassed() ? PASSED : FAILED, issuesFound() ? TO_REGRESS : ""));
         report.append(String.format("%n%s%n", getFailures()));
         if (issuesFound()) {
             report.append(KNOWN_ISSUES);
             report.append(String.format("%n%s%n", getKnownIssues()));
-        }
-    }
-
-    protected void performCalibration() {
-        logCalibration();
-        incrementIndentation();
-        executeCalibration();
-    }
-
-    private interface CalibrationBehavior {
-
-        String execute();
-    }
-
-    private class RootBehavior implements CalibrationBehavior {
-
-        @Override
-        public String execute() {
-            performCalibration();
-            compileReport();
-            decrementIndentation();
-            return report.toString();
-        }
-    }
-
-    private class ChildBehavior implements CalibrationBehavior {
-
-        @Override
-        public String execute() {
-            decrementIndentation();
-            performCalibration();
-            decrementIndentation();
-            return getFailures();
         }
     }
 }
