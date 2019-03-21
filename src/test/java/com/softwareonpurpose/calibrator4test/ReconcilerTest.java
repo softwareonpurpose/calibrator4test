@@ -11,7 +11,7 @@ public class ReconcilerTest {
 
     @Test
     public void twoNullBooleans() {
-        int result = Reconciler.reconcile((Boolean) null, (Boolean) null);
+        int result = Reconciler.reconcile(null, null);
         Assert.assertEquals(result, 0, "Two null Booleans returns 0");
     }
 
@@ -71,7 +71,7 @@ public class ReconcilerTest {
 
     @Test
     public void equalStringLists() {
-        List<String> stringList = new ArrayList<String>();
+        List<String> stringList = new ArrayList<>();
         stringList.add("String 1");
         stringList.add("String 2");
         int result = Reconciler.reconcile(stringList, stringList);
@@ -80,7 +80,7 @@ public class ReconcilerTest {
 
     @Test
     public void missingExpectedStringList() {
-        List<String> stringList = new ArrayList<String>();
+        List<String> stringList = new ArrayList<>();
         stringList.add("String 1");
         stringList.add("String 2");
         int result = Reconciler.reconcile(null, stringList);
@@ -89,7 +89,7 @@ public class ReconcilerTest {
 
     @Test
     public void missingActualStringList() {
-        List<String> stringList = new ArrayList<String>();
+        List<String> stringList = new ArrayList<>();
         stringList.add("String 1");
         stringList.add("String 2");
         int result = Reconciler.reconcile(stringList, null);
@@ -98,10 +98,10 @@ public class ReconcilerTest {
 
     @Test
     public void stringListContentDiffers() {
-        List<String> expectedStringList = new ArrayList<String>();
+        List<String> expectedStringList = new ArrayList<>();
         expectedStringList.add("String 1");
         expectedStringList.add("String 2");
-        List<String> actualStringList = new ArrayList<String>();
+        List<String> actualStringList = new ArrayList<>();
         actualStringList.add("String 1");
         actualStringList.add("String 3");
         int result = Reconciler.reconcile(expectedStringList, actualStringList);
@@ -110,10 +110,10 @@ public class ReconcilerTest {
 
     @Test
     public void stringListContentOrderDiffers() {
-        List<String> expectedStringList = new ArrayList<String>();
+        List<String> expectedStringList = new ArrayList<>();
         expectedStringList.add("String 1");
         expectedStringList.add("String 2");
-        List<String> actualStringList = new ArrayList<String>();
+        List<String> actualStringList = new ArrayList<>();
         actualStringList.add("String 2");
         actualStringList.add("String 1");
         int result = Reconciler.reconcile(expectedStringList, actualStringList);

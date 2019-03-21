@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 Craig A. Stockton
+ * Copyright 2019 Craig A. Stockton
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public abstract class Calibrator {
      * @param calibrator An instance of a 'child' calibrator
      */
     protected void addChildCalibrator(Calibrator calibrator) {
-        children.add(calibrator.withIndentManager(this.indentManager));
+        children.add(calibrator);
     }
 
     /**
@@ -122,9 +122,8 @@ public abstract class Calibrator {
         failures.append(indentManager.format(formattedResult));
     }
 
-    private Calibrator withIndentManager(IndentManager indentManager) {
+    private void withIndentManager(IndentManager indentManager) {
         this.indentManager = indentManager;
-        return this;
     }
 
     private void logCalibration() {
@@ -157,6 +156,7 @@ public abstract class Calibrator {
 
     private void executeChildCalibrations() {
         for (Calibrator calibrator : children) {
+            calibrator.withIndentManager(indentManager);
             failures.append(calibrator.calibrate());
         }
         compileChildIssues();

@@ -99,6 +99,22 @@ public class CalibratorTest {
     }
 
     @Test
+    public void parentGrandchildCalibrators_pass(){
+        AnObject expectedParent = AnObject.getInstance(true, 9, "parent");
+        AnObject actualParent = AnObject.getInstance(true, 9, "parent");
+        AnObject expectedChild = AnObject.getInstance(false, 9, "child");
+        AnObject actualChild = AnObject.getInstance(false, 9, "child");
+        AnObject expectedGrandchild = AnObject.getInstance(true, 1, "grandchild");
+        AnObject actualGrandchild = AnObject.getInstance(true, 1, "grandchild");
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedParent, actualParent);
+        AnObjectCalibrator childCalibrator = AnObjectCalibrator.getInstance(expectedChild, actualChild);
+        AnObjectCalibrator grandchildCalibrator = AnObjectCalibrator.getInstance(expectedGrandchild, actualGrandchild);
+        childCalibrator.addChildCalibrator(grandchildCalibrator);
+        calibrator.addChildCalibrator(childCalibrator);
+        Assert.assertEquals(calibrator.calibrate(), Calibrator.SUCCESS);
+    }
+
+    @Test
     public void expectedNull() {
         AnObject nullObject = null;
         AnObject anObject = AnObject.getInstance(true, 9, "String");
