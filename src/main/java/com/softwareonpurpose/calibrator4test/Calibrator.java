@@ -31,7 +31,6 @@ public abstract class Calibrator {
     private final static String CALIBRATION_FORMAT = "CALIBRATION FAILED: ";
     private final List<Calibrator> children = new ArrayList<>();
     private final StringBuilder failures = new StringBuilder();
-    private final StringBuilder knownIssues = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
     private final String description;
     private final String className;
@@ -119,16 +118,6 @@ public abstract class Calibrator {
         }
     }
 
-    private String getKnownIssues() {
-        return knownIssues.toString();
-    }
-
-    private void compileChildIssues() {
-        for (Calibrator child : children) {
-            knownIssues.append(child.getKnownIssues());
-        }
-    }
-
     private String getFailures() {
         return failures.toString();
     }
@@ -138,7 +127,6 @@ public abstract class Calibrator {
             calibrator.withIndentManager(indentManager);
             failures.append(calibrator.calibrate());
         }
-        compileChildIssues();
     }
 
     private boolean isPassed() {

@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
  * Logs and performs a verification, returning clear results formatted for a coverage report
  */
 class Verifier {
-
     final static String PASS = "";
     private final static Integer RECONCILED = 0;
     private final static String failureFormat = "%s -- Expected: %s  Actual: %s%n";
@@ -33,10 +32,10 @@ class Verifier {
     private final Object actual;
 
     private Verifier(String description, Object expected, Object actual, IndentManager formatter) {
-        this.indentManager = formatter;
+        indentManager = formatter;
         String expectedDescription = expected == null ? "<null>" : expected.toString();
         this.description = String.format("%s - %s", description, expectedDescription);
-        this.message = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
+        message = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
         this.expected = expected;
         this.actual = actual;
     }
