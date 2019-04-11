@@ -1,17 +1,17 @@
-/**
- * Copyright 2019 Craig A. Stockton
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/*
+  Copyright 2019 Craig A. Stockton
+  <p>
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  <p>
+  http://www.apache.org/licenses/LICENSE-2.0
+  <p>
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
  */
 package com.softwareonpurpose.calibrator4test;
 
@@ -22,15 +22,13 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Orchestrate calibration of complex objects for testing purposes
+ */
 public abstract class Calibrator {
-
     @SuppressWarnings("WeakerAccess")
     public static final String SUCCESS = "";
-    private final static String CALIBRATION_FORMAT = "CALIBRATION %s: %s";
-    private final static String PASSED = "PASSED";
-    private final static String FAILED = "FAILED";
-    private final static String TO_REGRESS = "(known issues to be regressed)";
-    private final static String KNOWN_ISSUES = "KNOWN ISSUES:";
+    private final static String CALIBRATION_FORMAT = "CALIBRATION FAILED: ";
     private final List<Calibrator> children = new ArrayList<>();
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder knownIssues = new StringBuilder();
@@ -43,13 +41,9 @@ public abstract class Calibrator {
     private IndentManager indentManager = IndentManager.getInstance();
 
     /**
-     * Calibrate an object against an expected object.
-     * Calibration consists of verifying significant properties against expected values.
-     * Child calibrators can be added representing more complex properties (e.g. common regions of a web page)
-     *
-     * @param description Description of object calibrated
-     * @param expected    Expected object
-     * @param actual      Actual object
+     * @param description String description of object to calibrate
+     * @param expected    Object expected comparator
+     * @param actual      Object actual compared
      */
     protected Calibrator(String description, Object expected, Object actual) {
         this.expectedExists = expected != null;
@@ -62,9 +56,8 @@ public abstract class Calibrator {
     /**
      * Calibrate the Actual object against the Expected object
      *
-     * @return A complete report from a root calibrator OR failures from a child calibrator
+     * @return String report from a root calibrator, OR detailed failures from a child calibrator
      */
-    @SuppressWarnings("WeakerAccess")
     public String calibrate() {
         if (indentManager.isAtRootLevel()) {
             logCalibration();
@@ -84,29 +77,18 @@ public abstract class Calibrator {
     }
 
     /**
-     * Implemented in each concrete Calibrator.
-     * Intended to contain ONLY calls to the verify() method.
+     * Implemented in each concrete Calibrator;
+     * to contain calls to verify() representing detailed verifications
      */
     protected abstract void executeVerifications();
 
     /**
      * Add a child calibrator
      *
-     * @param calibrator An instance of a 'child' calibrator
+     * @param calibrator Calibrator child (e.g. region of a page)
      */
     protected void addChildCalibrator(Calibrator calibrator) {
         children.add(calibrator);
-    }
-
-    /**
-     * Add a description of a known issue which accounts for a verification failure (e.g. bug).
-     * This should be removed once it is noticed that the verification failure NO longer occurs.
-     *
-     * @param description Free-form description of known issue (e.g. "Bug #999 - login fails")
-     */
-    @SuppressWarnings("WeakerAccess")
-    protected void addKnownIssue(@SuppressWarnings("SameParameterValue") String description) {
-        knownIssues.append(indentManager.format(String.format("%s -- %s", className, description)));
     }
 
     /**
@@ -146,10 +128,6 @@ public abstract class Calibrator {
         }
     }
 
-    private boolean issuesFound() {
-        return knownIssues.length() > 0;
-    }
-
     private String getFailures() {
         return failures.toString();
     }
@@ -183,14 +161,10 @@ public abstract class Calibrator {
     }
 
     private void compileReport() {
-        if (isPassed() && !issuesFound()) {
+        if (isPassed()) {
             return;
         }
-        report.append(String.format(CALIBRATION_FORMAT, isPassed() ? PASSED : FAILED, issuesFound() ? TO_REGRESS : ""));
+        report.append(CALIBRATION_FORMAT);
         report.append(String.format("%n%s%n", getFailures()));
-        if (issuesFound()) {
-            report.append(KNOWN_ISSUES);
-            report.append(String.format("%n%s%n", getKnownIssues()));
-        }
     }
 }

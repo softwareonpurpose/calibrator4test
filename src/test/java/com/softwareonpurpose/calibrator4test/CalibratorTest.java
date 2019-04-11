@@ -28,18 +28,6 @@ public class CalibratorTest {
     }
 
     @Test
-    public void nodeCalibrator_knownIssue() {
-        AnObject expected = AnObject.getInstance(true, 9, "String");
-        AnObject actual = AnObject.getInstance(true, 9, "String");
-        Calibrator calibrator = AnObjectCalibrator.getInstance(expected, actual);
-        calibrator.addKnownIssue("Known Bug Issue");
-        Assert.assertEquals(calibrator.calibrate(), "CALIBRATION PASSED: (known issues to be regressed)\r\n" +
-                "\r\n" +
-                "KNOWN ISSUES:\r\n" +
-                "AnObjectCalibrator -- Known Bug Issue\r\n");
-    }
-
-    @Test
     public void parentChildCalibrators_pass() {
         AnObject expectedParent = AnObject.getInstance(true, 9, "parent");
         AnObject actualParent = AnObject.getInstance(true, 9, "parent");
