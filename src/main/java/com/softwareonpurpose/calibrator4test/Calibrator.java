@@ -92,14 +92,15 @@ public abstract class Calibrator {
     }
 
     /**
-     * Verifies an actual object with an expected object, adding to 'Failure' message if verification fails
+     * Executes verification that an actual Object reconciles with an expected Object,
+     * logging that verification and compiling failure details
      *
-     * @param description Description of Object verified
-     * @param expected    Expected object
-     * @param actual      Actual object
+     * @param description String description of Object verified
+     * @param expected    Object expected (comparator)
+     * @param actual      Object actual (compared)
      */
     protected void verify(String description, Object expected, Object actual) {
-        String result = Verifier.getInstance(description, expected, actual, indentManager).verify();
+        String result = Verifier.verify(description, expected, actual, indentManager);
         String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : SUCCESS;
         failures.append(indentManager.format(formattedResult));
     }
