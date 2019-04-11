@@ -112,7 +112,7 @@ public abstract class Calibrator {
     private void logCalibration() {
         logger.info("");
         if (indentManager.isAtRootLevel()) {
-            logger.info("VALIDATE:");
+            logger.info("CALIBRATE:");
             logger.info(description);
         } else {
             logger.info(indentManager.format(description));
