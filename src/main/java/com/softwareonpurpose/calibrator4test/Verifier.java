@@ -63,24 +63,9 @@ class Verifier {
      * Populated String:       Details of reconciliation failure
      */
     static String verify(String description, Object expected, Object actual, IndentManager indentManager) {
-        LoggerFactory.getLogger("").info(indentManager.format(description));
         String expectedDescription = expected == null ? "<null>" : expected.toString();
+        LoggerFactory.getLogger("").info(indentManager.format(String.format("%s - %s", description, expectedDescription)));
         String failureMessage = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
         return RECONCILED.equals(Reconciler.reconcile(expected, actual)) ? PASS : failureMessage;
-    }
-
-    /**
-     * Reconcile the expected and actual objects and return results formatted for Calibration report
-     *
-     * @return String formatted result
-     * <p>
-     * PASS (empty String):    Reconciliation successful
-     * Populated String:       Details of reconciliation failure
-     * @deprecated To be removed after version 1.3.0:  Replace with use of static String verify(String description, Object expected, Object actual, IndentManager indentManager)
-     */
-    String verify() {
-        LoggerFactory.getLogger("").info(indentManager.format(description));
-        if (RECONCILED.equals(Reconciler.reconcile(expected, actual))) return PASS;
-        return message;
     }
 }
