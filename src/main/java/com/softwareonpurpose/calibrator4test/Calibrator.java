@@ -53,6 +53,9 @@ public abstract class Calibrator {
         this.description = description;
     }
 
+    /**
+     * Reset the verification count to 0 (zero)
+     */
     public static void resetCount() {
         verificationCount = 0;
     }
@@ -96,8 +99,9 @@ public abstract class Calibrator {
     }
 
     /**
-     * Executes verification that an actual Object reconciles with an expected Object,
-     * logging that verification and compiling failure details
+     * Executes verification that an actual Object reconciles with an expected Object.
+     * Increments total count of verifications executed by all Calibrator objects.
+     * Logs the verification and compiles failure details.
      *
      * @param description String description of Object verified
      * @param expected    Object expected (comparator)
