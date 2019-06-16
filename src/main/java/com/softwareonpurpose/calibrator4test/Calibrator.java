@@ -29,6 +29,7 @@ public abstract class Calibrator {
     @SuppressWarnings("WeakerAccess")
     public static final String SUCCESS = "";
     private final static String CALIBRATION_FORMAT = "CALIBRATION FAILED: ";
+    protected static long verificationCount;
     private final List<Calibrator> children = new ArrayList<>();
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
@@ -50,6 +51,10 @@ public abstract class Calibrator {
         final String fullClassname = this.getClass().getName();
         this.className = fullClassname.substring(fullClassname.lastIndexOf(".") + 1);
         this.description = description;
+    }
+
+    public static void resetCount() {
+        verificationCount = 0;
     }
 
     /**
@@ -99,6 +104,7 @@ public abstract class Calibrator {
      * @param actual      Object actual (compared)
      */
     protected void verify(String description, Object expected, Object actual) {
+        verificationCount += 1;
         String result = Verifier.verify(description, expected, actual, indentManager);
         String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : SUCCESS;
         failures.append(indentManager.format(formattedResult));
