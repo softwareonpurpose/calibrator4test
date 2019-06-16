@@ -8,6 +8,8 @@ import org.testng.annotations.Test;
 @Test
 public class CalibratorTest {
 
+    public static final String INCORRECT_VERIFICATION_COUNT = "Incorrect verification count";
+
     @Test
     public void nodeCalibrator_pass() {
         AnObject expected = AnObject.getInstance(true, 9, "String");
@@ -87,7 +89,7 @@ public class CalibratorTest {
     }
 
     @Test
-    public void parentGrandchildCalibrators_pass(){
+    public void parentGrandchildCalibrators_pass() {
         AnObject expectedParent = AnObject.getInstance(true, 9, "parent");
         AnObject actualParent = AnObject.getInstance(true, 9, "parent");
         AnObject expectedChild = AnObject.getInstance(false, 9, "child");
@@ -136,5 +138,59 @@ public class CalibratorTest {
         String actual = calibrator.calibrate();
         String expected = Calibrator.SUCCESS;
         Assert.assertEquals(actual, expected);
+    }
+
+    @Test
+    public void verificationCountPreCalibration() {
+        AnObjectCalibrator.resetCount();
+        long expected = 0;
+        long actual = AnObjectCalibrator.getVerificationCount();
+        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
+    }
+
+    @Test
+    public void verificationCountPostCalibrationSingleCalibrationPass() {
+        AnObjectCalibrator.resetCount();
+        long expected = 3;
+        AnObject expectedObject = AnObject.getInstance(true, 0, "string");
+        AnObject actualObject = AnObject.getInstance(true, 0, "string");
+        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
+        long actual = AnObjectCalibrator.getVerificationCount();
+        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
+    }
+
+    @Test
+    public void verificationCountPostCalibrationSingleCalibrationFailure() {
+        AnObjectCalibrator.resetCount();
+        long expected = 3;
+        AnObject expectedObject = AnObject.getInstance(false, 0, "string");
+        AnObject actualObject = AnObject.getInstance(true, 0, "string");
+        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
+        long actual = AnObjectCalibrator.getVerificationCount();
+        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
+    }
+
+    @Test
+    public void verificationCountPostCalibrationMultipleCalibrationPass() {
+        AnObjectCalibrator.resetCount();
+        long expected = 6;
+        AnObject expectedObject = AnObject.getInstance(true, 0, "string");
+        AnObject actualObject = AnObject.getInstance(true, 0, "string");
+        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
+        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
+        long actual = AnObjectCalibrator.getVerificationCount();
+        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
+    }
+
+    @Test
+    public void verificationCountPostCalibrationMultipleCalibrationFailure() {
+        AnObjectCalibrator.resetCount();
+        long expected = 6;
+        AnObject expectedObject = AnObject.getInstance(true, 7, "string");
+        AnObject actualObject = AnObject.getInstance(true, 0, "string");
+        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
+        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
+        long actual = AnObjectCalibrator.getVerificationCount();
+        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
     }
 }

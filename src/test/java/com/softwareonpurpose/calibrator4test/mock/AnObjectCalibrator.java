@@ -18,6 +18,10 @@ public class AnObjectCalibrator extends Calibrator {
         return new AnObjectCalibrator(expected, actual);
     }
 
+    public static long getVerificationCount() {
+        return verificationCount;
+    }
+
     @Override
     protected void executeVerifications() {
         verify("Boolean", expected.getBoolean(), actual.getBoolean());
