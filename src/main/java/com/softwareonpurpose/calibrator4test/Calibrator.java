@@ -29,7 +29,7 @@ public abstract class Calibrator {
     @SuppressWarnings("WeakerAccess")
     public static final String SUCCESS = "";
     private final static String CALIBRATION_FORMAT = "CALIBRATION FAILED: ";
-    protected static long verificationCount;
+    private static long verificationCount;
     private final List<Calibrator> children = new ArrayList<>();
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
@@ -58,6 +58,10 @@ public abstract class Calibrator {
      */
     public static void resetCount() {
         verificationCount = 0;
+    }
+
+    public static long getVerificationCount() {
+        return verificationCount;
     }
 
     /**
