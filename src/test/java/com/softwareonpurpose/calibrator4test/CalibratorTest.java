@@ -142,67 +142,31 @@ public class CalibratorTest {
 
     @Test
     public void verificationCountPreCalibration() {
-        AnObjectCalibrator.resetCount();
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(AnObject.getInstance(true, 1, "1"), AnObject.getInstance(true, 1, "1"));
         long expected = 0;
-        long actual = AnObjectCalibrator.getVerificationCount();
+        long actual = calibrator.getVerificationCount();
         Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
     }
 
     @Test
     public void verificationCountPostCalibrationSingleCalibrationPass() {
-        AnObjectCalibrator.resetCount();
-        long expected = 3;
         AnObject expectedObject = AnObject.getInstance(true, 0, "string");
         AnObject actualObject = AnObject.getInstance(true, 0, "string");
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        long actual = AnObjectCalibrator.getVerificationCount();
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedObject, actualObject);
+        long expected = 3;
+        calibrator.calibrate();
+        long actual = calibrator.getVerificationCount();
         Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
     }
 
     @Test
     public void verificationCountPostCalibrationSingleCalibrationFailure() {
-        AnObjectCalibrator.resetCount();
-        long expected = 3;
         AnObject expectedObject = AnObject.getInstance(false, 0, "string");
         AnObject actualObject = AnObject.getInstance(true, 0, "string");
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        long actual = AnObjectCalibrator.getVerificationCount();
-        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
-    }
-
-    @Test
-    public void verificationCountPostCalibrationMultipleCalibrationPass() {
-        AnObjectCalibrator.resetCount();
-        long expected = 6;
-        AnObject expectedObject = AnObject.getInstance(true, 0, "string");
-        AnObject actualObject = AnObject.getInstance(true, 0, "string");
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        long actual = AnObjectCalibrator.getVerificationCount();
-        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
-    }
-
-    @Test
-    public void verificationCountPostCalibrationMultipleCalibrationFailure() {
-        AnObjectCalibrator.resetCount();
-        long expected = 6;
-        AnObject expectedObject = AnObject.getInstance(true, 7, "string");
-        AnObject actualObject = AnObject.getInstance(true, 0, "string");
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        long actual = AnObjectCalibrator.getVerificationCount();
-        Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
-    }
-
-    @Test
-    public void verificationCountPostCalibrationMultipleCalibrators() {
-        AnObjectCalibrator.resetCount();
-        long expected = 6;
-        AnObject expectedObject = AnObject.getInstance(true, 7, "string");
-        AnObject actualObject = AnObject.getInstance(true, 7, "string");
-        AnObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        AnotherObjectCalibrator.getInstance(expectedObject, actualObject).calibrate();
-        long actual = AnObjectCalibrator.getVerificationCount();
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedObject, actualObject);
+        long expected = 3;
+        calibrator.calibrate();
+        long actual = calibrator.getVerificationCount();
         Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
     }
 }

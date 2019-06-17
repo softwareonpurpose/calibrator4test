@@ -28,7 +28,7 @@ import java.util.List;
 public abstract class Calibrator {
     public static final String SUCCESS = "";
     private final static String CALIBRATION_FORMAT = "CALIBRATION FAILED: ";
-    private static Tally verificationTally = Tally.getInstance();
+    private Tally verificationTally = Tally.getInstance();
     private final List<Calibrator> children = new ArrayList<>();
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
@@ -52,14 +52,7 @@ public abstract class Calibrator {
         this.description = description;
     }
 
-    /**
-     * Reset the verification count to 0 (zero)
-     */
-    public static void resetCount() {
-        verificationTally.reset();
-    }
-
-    public static long getVerificationCount() {
+    public long getVerificationCount() {
         return verificationTally.getTally();
     }
 
