@@ -53,7 +53,11 @@ public abstract class Calibrator {
     }
 
     public long getVerificationCount() {
-        return verificationTally.getTally();
+        long accumulatedCount = verificationTally.getTally();
+        for(Calibrator child:children){
+            accumulatedCount += child.getVerificationCount();
+        }
+        return accumulatedCount;
     }
 
     /**

@@ -149,7 +149,7 @@ public class CalibratorTest {
     }
 
     @Test
-    public void verificationCountPostCalibrationSingleCalibrationPass() {
+    public void verificationCountSingleCalibrationPass() {
         AnObject expectedObject = AnObject.getInstance(true, 0, "string");
         AnObject actualObject = AnObject.getInstance(true, 0, "string");
         AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedObject, actualObject);
@@ -160,7 +160,7 @@ public class CalibratorTest {
     }
 
     @Test
-    public void verificationCountPostCalibrationSingleCalibrationFailure() {
+    public void verificationCountSingleCalibrationFailure() {
         AnObject expectedObject = AnObject.getInstance(false, 0, "string");
         AnObject actualObject = AnObject.getInstance(true, 0, "string");
         AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedObject, actualObject);
@@ -168,5 +168,22 @@ public class CalibratorTest {
         calibrator.calibrate();
         long actual = calibrator.getVerificationCount();
         Assert.assertEquals(actual, expected, INCORRECT_VERIFICATION_COUNT);
+    }
+
+    @Test
+    public void verificationCountParentGrandchild() {
+        AnObject expectedParent = AnObject.getInstance(true, 9, "parent");
+        AnObject actualParent = AnObject.getInstance(true, 9, "parent");
+        AnObject expectedChild = AnObject.getInstance(false, 9, "child");
+        AnObject actualChild = AnObject.getInstance(false, 9, "child");
+        AnObject expectedGrandchild = AnObject.getInstance(true, 1, "grandchild");
+        AnObject actualGrandchild = AnObject.getInstance(true, 1, "grandchild");
+        AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedParent, actualParent);
+        AnObjectCalibrator childCalibrator = AnObjectCalibrator.getInstance(expectedChild, actualChild);
+        AnObjectCalibrator grandchildCalibrator = AnObjectCalibrator.getInstance(expectedGrandchild, actualGrandchild);
+        childCalibrator.addChildCalibrator(grandchildCalibrator);
+        calibrator.addChildCalibrator(childCalibrator);
+        calibrator.calibrate();
+        Assert.assertEquals(calibrator.getVerificationCount(), 9);
     }
 }
