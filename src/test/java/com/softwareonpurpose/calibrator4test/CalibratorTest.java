@@ -8,8 +8,7 @@ import org.testng.annotations.Test;
 
 @Test
 public class CalibratorTest {
-
-    public static final String INCORRECT_VERIFICATION_COUNT = "Incorrect verification count";
+    private static final String INCORRECT_VERIFICATION_COUNT = "Incorrect verification count";
 
     @Test
     public void nodeCalibrator_pass() {

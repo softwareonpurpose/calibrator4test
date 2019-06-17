@@ -26,10 +26,9 @@ import java.util.List;
  * Orchestrate calibration of complex objects for testing purposes
  */
 public abstract class Calibrator {
-    @SuppressWarnings("WeakerAccess")
     public static final String SUCCESS = "";
     private final static String CALIBRATION_FORMAT = "CALIBRATION FAILED: ";
-    private static long verificationCount;
+    private static Tally verificationTally = Tally.getInstance();
     private final List<Calibrator> children = new ArrayList<>();
     private final StringBuilder failures = new StringBuilder();
     private final StringBuilder report = new StringBuilder();
@@ -57,11 +56,11 @@ public abstract class Calibrator {
      * Reset the verification count to 0 (zero)
      */
     public static void resetCount() {
-        verificationCount = 0;
+        verificationTally.reset();
     }
 
     public static long getVerificationCount() {
-        return verificationCount;
+        return verificationTally.getTally();
     }
 
     /**
@@ -112,7 +111,7 @@ public abstract class Calibrator {
      * @param actual      Object actual (compared)
      */
     protected void verify(String description, Object expected, Object actual) {
-        verificationCount += 1;
+        verificationTally.increment();
         String result = Verifier.verify(description, expected, actual, indentManager);
         String formattedResult = result.length() > 0 ? String.format("%s: %s", className, result) : SUCCESS;
         failures.append(indentManager.format(formattedResult));
