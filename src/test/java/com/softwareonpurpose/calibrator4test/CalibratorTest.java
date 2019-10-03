@@ -160,7 +160,7 @@ public class CalibratorTest {
     }
 
     @Test
-    public void verificationCountSingleCalibrationFailure() {
+    public void verificationCountSingleVerificationFailure() {
         AnObject expectedObject = AnObject.getInstance(false, 0, "string");
         AnObject actualObject = AnObject.getInstance(true, 0, "string");
         AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(expectedObject, actualObject);

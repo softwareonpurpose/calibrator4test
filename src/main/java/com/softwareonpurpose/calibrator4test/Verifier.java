@@ -41,20 +41,6 @@ class Verifier {
     }
 
     /**
-     * Get an instance of a Verifier
-     *
-     * @param description   String description of the Object verified
-     * @param expected      Object expected as the comparator
-     * @param actual        Object actual as the compared
-     * @param indentManager IndentManager to format log entries and verification results
-     * @return Verifier instance
-     * @deprecated To be removed after version 1.3.0:  The verify() method has been made static, making an instance unnecessary
-     */
-    static Verifier getInstance(String description, Object expected, Object actual, IndentManager indentManager) {
-        return new Verifier(description, expected, actual, indentManager);
-    }
-
-    /**
      * Reconcile the expected and actual objects and return results formatted for Calibration report
      *
      * @return String formatted result
