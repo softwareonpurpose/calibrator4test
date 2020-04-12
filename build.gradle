@@ -4,25 +4,25 @@ plugins {
 }
 
 group 'com.softwareonpurpose'
+project.version = '1.5.0'
 sourceCompatibility = 11
-version = '1.5.0'
 
 repositories { mavenCentral() }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.8.+'
-    compile 'ch.qos.logback:logback-core:1.2.+'
-    compile 'ch.qos.logback:logback-classic:1.2.+'
-    compile 'org.slf4j:slf4j-api:1.7.+'
-    testCompile 'org.testng:testng:6.14.+'
-    compile files('./src/main/resources/indentmanager-1.0.8.jar')
+    implementation 'com.google.code.gson:gson:2.8.+'
+    implementation 'ch.qos.logback:logback-core:1.2.+'
+    implementation 'ch.qos.logback:logback-classic:1.2.+'
+    implementation 'org.slf4j:slf4j-api:1.7.+'
+    implementation files('./src/main/resources/indentmanager-1.0.8.jar')
+    testCompileOnly 'org.testng:testng:6.14.+'
 }
 
 wrapper() { gradleVersion = '6.3' }
 
 jar {
     manifest {
-        attributes 'Implementation-Title': 'calibrator4test', 'Implementation-Version': version
+        attributes 'Implementation-Title': 'calibrator4test', 'Implementation-Version': project.version
     }
 }
 
