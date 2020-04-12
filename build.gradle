@@ -1,9 +1,9 @@
-group 'com.softwareonpurpose'
-
 plugins {
     id 'java'
     id 'jacoco'
 }
+
+group 'com.softwareonpurpose'
 sourceCompatibility = 11
 version = '1.5.0'
 
