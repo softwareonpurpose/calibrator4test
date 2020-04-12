@@ -14,8 +14,8 @@ dependencies {
     compile 'ch.qos.logback:logback-core:1.2.+'
     compile 'ch.qos.logback:logback-classic:1.2.+'
     compile 'org.slf4j:slf4j-api:1.7.+'
-    compile files('./src/main/resources/indentmanager-1.0.5.jar')
     testCompile 'org.testng:testng:6.14.3'
+    compile files('./src/main/resources/indentmanager-1.0.8.jar')
 }
 
 wrapper() { gradleVersion = '6.3' }
