@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.softwareonpurpose'
-project.version = '1.5.0'
+project.version = '1.5.1'
 sourceCompatibility = 11
 
 repositories { mavenCentral() }
