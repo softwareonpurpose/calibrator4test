@@ -22,22 +22,14 @@ import org.slf4j.LoggerFactory;
  * Logs and performs a verification, returning clear results formatted for a coverage report
  */
 class Verifier {
-    final static String PASS = "";
-    private final static Integer RECONCILED = 0;
-    private final static String failureFormat = "%s -- Expected: %s  Actual: %s%n";
-    private final IndentManager indentManager;
-    private final String description;
-    private final String message;
-    private final Object expected;
-    private final Object actual;
+    static final String PASS = "";
+    private static final String failureFormat = "%s -- Expected: %s  Actual: %s%n";
+    private static final int RECONCILED = 0;
+    private static final int EXPECTED_NULL = 1;
+    private static final int ACTUAL_NULL = 2;
+    private static final int DISCREPANCY = 3;
 
-    private Verifier(String description, Object expected, Object actual, IndentManager formatter) {
-        indentManager = formatter;
-        String expectedDescription = expected == null ? "<null>" : expected.toString();
-        this.description = String.format("%s - %s", description, expectedDescription);
-        message = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
-        this.expected = expected;
-        this.actual = actual;
+    private Verifier() {
     }
 
     /**
@@ -50,8 +42,36 @@ class Verifier {
      */
     static String verify(String description, Object expected, Object actual, IndentManager indentManager) {
         String expectedDescription = expected == null ? "<null>" : expected.toString();
-        LoggerFactory.getLogger("").info(indentManager.format(String.format("%s - %s", description, expectedDescription)));
+        logVerification(description, indentManager, expectedDescription);
         String failureMessage = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
-        return RECONCILED.equals(Reconciler.reconcile(expected, actual)) ? PASS : failureMessage;
+        return RECONCILED == reconcile(expected, actual) ? PASS : failureMessage;
+    }
+
+    private static void logVerification(String description, IndentManager indentManager, String expectedDescription) {
+        String verificationDescription = String.format("%s - %s", description, expectedDescription);
+        if (indentManager != null) {
+            verificationDescription = indentManager.format(verificationDescription);
+        }
+        LoggerFactory.getLogger("").info(verificationDescription);
+    }
+
+    /**
+     * Reconcile two Objects
+     *
+     * @return Integer value indicating the result:
+     * <p>
+     * 0 - Reconciled
+     * 1 - Expected is null
+     * 2 - Actual is null
+     * 3 - Discrepancy exists
+     */
+    private static Integer reconcile(Object expected, Object actual) {
+        if (expected == null && actual == null)
+            return RECONCILED;
+        if (expected == null)
+            return EXPECTED_NULL;
+        if (actual == null)
+            return ACTUAL_NULL;
+        return actual.equals(expected) ? RECONCILED : DISCREPANCY;
     }
 }
