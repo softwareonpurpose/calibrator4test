@@ -16,6 +16,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.+'
     implementation files('./src/main/resources/indentmanager-1.0.8.jar')
     testImplementation 'org.testng:testng:7.1.+'
+    asciidoclet 'org.asciidoctor:asciidoclet:1.+'
 }
 
 wrapper() { gradleVersion = '6.3' }
