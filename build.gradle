@@ -2,29 +2,19 @@ group 'com.softwareonpurpose'
 
 apply plugin: 'java'
 
-sourceCompatibility = 11
-version = '1.5.0'
+version = '1.5.2'
 
 repositories { mavenCentral() }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.8.+'
-    compile 'ch.qos.logback:logback-core:1.2.+'
-    compile 'ch.qos.logback:logback-classic:1.2.+'
-    compile 'org.slf4j:slf4j-api:1.7.+'
-    compile files('./src/main/resources/indentmanager-1.0.5.jar')
-    testCompile 'org.testng:testng:6.14.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.2'
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation files('./src/main/resources/indentmanager-1.0.5.jar')
+    testImplementation 'org.testng:testng:7.5'
 }
 
-wrapper() { gradleVersion = '5.6.2' }
-
-jar {
-    manifest {
-        attributes 'Implementation-Title': 'calibrator4test', 'Implementation-Version': version
-    }
-}
+wrapper() { gradleVersion = '7.3' }
 
 test {
     useTestNG()
-    systemProperties 'property': 'value'
 }

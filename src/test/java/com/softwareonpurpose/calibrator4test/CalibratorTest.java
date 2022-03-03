@@ -2,7 +2,6 @@ package com.softwareonpurpose.calibrator4test;
 
 import com.softwareonpurpose.calibrator4test.mock.AnObject;
 import com.softwareonpurpose.calibrator4test.mock.AnObjectCalibrator;
-import com.softwareonpurpose.calibrator4test.mock.AnotherObjectCalibrator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -23,10 +22,10 @@ public class CalibratorTest {
         AnObject expected = AnObject.getInstance(true, 9, "String");
         AnObject actual = AnObject.getInstance(false, 0, "Not String");
         Calibrator calibrator = AnObjectCalibrator.getInstance(expected, actual);
-        Assert.assertEquals(calibrator.calibrate(), "CALIBRATION FAILED: \r\n" +
-                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
-                "    AnObjectCalibrator: Integer -- Expected: 9  Actual: 0\r\n" +
-                "    AnObjectCalibrator: String -- Expected: String  Actual: Not String\r\n\r\n");
+        Assert.assertEquals(calibrator.calibrate(), String.format("CALIBRATION FAILED: %n" +
+                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false%n" +
+                "    AnObjectCalibrator: Integer -- Expected: 9  Actual: 0%n" +
+                "    AnObjectCalibrator: String -- Expected: String  Actual: Not String%n%n"));
     }
 
     @Test
@@ -46,11 +45,11 @@ public class CalibratorTest {
         AnObject object_2 = AnObject.getInstance(false, 9, "String");
         Calibrator parent = AnObjectCalibrator.getInstance(object_1, object_2);
         parent.addChildCalibrator(AnObjectCalibrator.getInstance(object_1, object_1));
-        String expected = "CALIBRATION FAILED: \r\n" +
-                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
-                "    AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
-                "    AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
-                "\r\n";
+        String expected = String.format("CALIBRATION FAILED: %n" +
+                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false%n" +
+                "    AnObjectCalibrator: Integer -- Expected: 5  Actual: 9%n" +
+                "    AnObjectCalibrator: String -- Expected: Child String  Actual: String%n" +
+                "%n");
         String actual = parent.calibrate();
         Assert.assertEquals(actual, expected);
     }
@@ -61,11 +60,11 @@ public class CalibratorTest {
         AnObject object_2 = AnObject.getInstance(false, 9, "String");
         Calibrator parent = AnObjectCalibrator.getInstance(object_1, object_1);
         parent.addChildCalibrator(AnObjectCalibrator.getInstance(object_1, object_2));
-        String expected = "CALIBRATION FAILED: \r\n" +
-                "      AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
-                "      AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
-                "      AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
-                "\r\n";
+        String expected = String.format("CALIBRATION FAILED: %n" +
+                "      AnObjectCalibrator: Boolean -- Expected: true  Actual: false%n" +
+                "      AnObjectCalibrator: Integer -- Expected: 5  Actual: 9%n" +
+                "      AnObjectCalibrator: String -- Expected: Child String  Actual: String%n" +
+                "%n");
         String actual = parent.calibrate();
         Assert.assertEquals(actual, expected);
     }
@@ -76,14 +75,14 @@ public class CalibratorTest {
         AnObject object_2 = AnObject.getInstance(false, 9, "String");
         Calibrator parent = AnObjectCalibrator.getInstance(object_1, object_2);
         parent.addChildCalibrator(AnObjectCalibrator.getInstance(object_1, object_2));
-        String expected = "CALIBRATION FAILED: \r\n" +
-                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
-                "    AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
-                "    AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
-                "      AnObjectCalibrator: Boolean -- Expected: true  Actual: false\r\n" +
-                "      AnObjectCalibrator: Integer -- Expected: 5  Actual: 9\r\n" +
-                "      AnObjectCalibrator: String -- Expected: Child String  Actual: String\r\n" +
-                "\r\n";
+        String expected = String.format("CALIBRATION FAILED: %n" +
+                "    AnObjectCalibrator: Boolean -- Expected: true  Actual: false%n" +
+                "    AnObjectCalibrator: Integer -- Expected: 5  Actual: 9%n" +
+                "    AnObjectCalibrator: String -- Expected: Child String  Actual: String%n" +
+                "      AnObjectCalibrator: Boolean -- Expected: true  Actual: false%n" +
+                "      AnObjectCalibrator: Integer -- Expected: 5  Actual: 9%n" +
+                "      AnObjectCalibrator: String -- Expected: Child String  Actual: String%n" +
+                "%n");
         String actual = parent.calibrate();
         Assert.assertEquals(actual, expected);
     }
@@ -111,9 +110,9 @@ public class CalibratorTest {
         //noinspection ConstantConditions
         AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(nullObject, anObject);
         String actual = calibrator.calibrate();
-        String expected = "CALIBRATION FAILED: \r\n" +
-                "    AnObjectCalibrator: Object exists -- Expected: false  Actual: true\r\n" +
-                "\r\n";
+        String expected = String.format("CALIBRATION FAILED: %n" +
+                "    AnObjectCalibrator: Object exists -- Expected: false  Actual: true%n" +
+                "%n");
         Assert.assertEquals(actual, expected);
     }
 
@@ -124,9 +123,9 @@ public class CalibratorTest {
         //noinspection ConstantConditions
         AnObjectCalibrator calibrator = AnObjectCalibrator.getInstance(anObject, nullObject);
         String actual = calibrator.calibrate();
-        String expected = "CALIBRATION FAILED: \r\n" +
-                "    AnObjectCalibrator: Object exists -- Expected: true  Actual: false\r\n" +
-                "\r\n";
+        String expected = String.format("CALIBRATION FAILED: %n" +
+                "    AnObjectCalibrator: Object exists -- Expected: true  Actual: false%n" +
+                "%n");
         Assert.assertEquals(actual, expected);
     }
 
