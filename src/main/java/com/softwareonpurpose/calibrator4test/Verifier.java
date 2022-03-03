@@ -16,7 +16,7 @@
 package com.softwareonpurpose.calibrator4test;
 
 import com.softwareonpurpose.indentmanager.IndentManager;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Logs and performs a verification, returning clear results formatted for a coverage report
@@ -50,7 +50,7 @@ class Verifier {
      */
     static String verify(String description, Object expected, Object actual, IndentManager indentManager) {
         String expectedDescription = expected == null ? "<null>" : expected.toString();
-        LoggerFactory.getLogger("").info(indentManager.format(String.format("%s - %s", description, expectedDescription)));
+        LogManager.getLogger("").info(indentManager.format(String.format("%s - %s", description, expectedDescription)));
         String failureMessage = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
         return RECONCILED.equals(Reconciler.reconcile(expected, actual)) ? PASS : failureMessage;
     }
