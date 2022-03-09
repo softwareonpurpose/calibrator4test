@@ -16,7 +16,7 @@
 package com.softwareonpurpose.calibrator4test;
 
 import com.softwareonpurpose.indentmanager.IndentManager;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Logs and performs a verification, returning clear results formatted for a coverage report
@@ -42,17 +42,9 @@ class Verifier {
      */
     static String verify(String description, Object expected, Object actual, IndentManager indentManager) {
         String expectedDescription = expected == null ? "<null>" : expected.toString();
-        logVerification(description, indentManager, expectedDescription);
+        LogManager.getLogger("").info(indentManager.format(String.format("%s - %s", description, expectedDescription)));
         String failureMessage = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
         return RECONCILED == reconcile(expected, actual) ? PASS : failureMessage;
-    }
-
-    private static void logVerification(String description, IndentManager indentManager, String expectedDescription) {
-        String verificationDescription = String.format("%s - %s", description, expectedDescription);
-        if (indentManager != null) {
-            verificationDescription = indentManager.format(verificationDescription);
-        }
-        LoggerFactory.getLogger("").info(verificationDescription);
     }
 
     /**

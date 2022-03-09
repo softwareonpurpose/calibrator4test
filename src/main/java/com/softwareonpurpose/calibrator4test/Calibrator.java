@@ -16,8 +16,8 @@
 package com.softwareonpurpose.calibrator4test;
 
 import com.softwareonpurpose.indentmanager.IndentManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public abstract class Calibrator {
     private final String className;
     private final boolean expectedExists;
     private final boolean actualExists;
-    private final Logger logger = LoggerFactory.getLogger("");
+    private static final Logger logger = LogManager.getLogger("");
     private IndentManager indentManager = IndentManager.getInstance();
 
     /**
