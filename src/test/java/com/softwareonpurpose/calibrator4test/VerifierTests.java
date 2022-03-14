@@ -29,8 +29,10 @@ public class VerifierTests {
 
     @Test
     public void testLogVerification_includeIndentManager() {
+        IndentManager indentManager = IndentManager.getInstance(2);
+        indentManager.increment();
         String expected = String.format("Verification description -- Expected: String  Actual: 999%n");
-        String actual = Verifier.verify("Verification description", "String", 999, IndentManager.getInstance());
+        String actual = Verifier.verify("Verification description", "String", 999, indentManager);
         Assert.assertEquals(actual, expected, "Failed to accept an instance of IndentManager");
     }
 

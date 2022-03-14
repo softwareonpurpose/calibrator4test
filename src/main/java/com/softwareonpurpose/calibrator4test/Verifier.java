@@ -42,9 +42,15 @@ class Verifier {
      */
     static String verify(String description, Object expected, Object actual, IndentManager indentManager) {
         String expectedDescription = expected == null ? "<null>" : expected.toString();
-        LogManager.getLogger("").info(indentManager.format(String.format("%s - %s", description, expectedDescription)));
+        logVerification(description, indentManager, expectedDescription);
         String failureMessage = String.format(failureFormat, description, expectedDescription, actual == null ? "<null>" : actual.toString());
         return RECONCILED == reconcile(expected, actual) ? PASS : failureMessage;
+    }
+
+    private static void logVerification(String description, IndentManager indentManager, String expectedDescription) {
+        String verificationMessage = String.format("%s - %s", description, expectedDescription);
+        String formattedMessage = indentManager == null ? verificationMessage : indentManager.format(verificationMessage);
+        LogManager.getLogger("").info(formattedMessage);
     }
 
     /**

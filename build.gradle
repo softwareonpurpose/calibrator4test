@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.softwareonpurpose'
-project.version = '1.5.2'
+project.version = '1.5.3'
 
 repositories { mavenCentral() }
 
@@ -26,4 +26,17 @@ jar {
 
 test {
     useTestNG()
+    finalizedBy jacocoTestReport
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('reports/jacocoReports')
+    }
 }
