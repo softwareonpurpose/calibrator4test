@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.softwareonpurpose'
-project.version = '1.5.3'
+project.version = '1.5.4'
 
 repositories { mavenCentral() }
 
@@ -15,7 +15,7 @@ dependencies {
     testImplementation 'org.testng:testng:7.5'
 }
 
-wrapper() { gradleVersion = '7.3' }
+wrapper() { gradleVersion = '7.6' }
 
 jar {
     from {
